@@ -87,7 +87,7 @@ const Slider = () => {
 
                 <InfoContainer>
                     <Tittle>SUMMER SALE</Tittle>
-                    <Desc>DON'T COMPROMISE ON STYLE AND SWAG</Desc>
+                        <Desc>DON'T COMPROMISE ON STYLE AND SWAG</Desc>
                     <Button>SHOP NOW</Button>
 
                 </InfoContainer>
@@ -100,7 +100,7 @@ const Slider = () => {
 
                 <InfoContainer>
                     <Tittle>SUMMER SALE</Tittle>
-                    <Desc>DON'T COMPROMISE ON STYLE AND SWAG</Desc>
+                        <Desc>DON'T COMPROMISE ON STYLE AND SWAG</Desc>
                     <Button>SHOP NOW</Button>
 
                 </InfoContainer>
