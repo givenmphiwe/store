@@ -39,3 +39,38 @@ export const categories = [
         title: "MOST LOVED"
     }
 ]
+
+export const popularProducts = [
+    {
+        id: 1,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    },
+    {
+        id: 2,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    },
+    {
+        id: 3,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    },
+    {
+        id: 4,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    },
+    {
+        id: 5,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    },
+    {
+        id: 6,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    },
+    {
+        id: 7,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    },
+    {
+        id: 8,
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+    }
+]
