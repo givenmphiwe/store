@@ -21,3 +21,21 @@ export const sliderItems = [
         bg: "fcf1ed",
     },
 ]
+
+export const categories = [
+    {
+        id: 1,
+        img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
+        title: "FOR MEN"
+    },
+    {
+        id: 2,
+        img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
+        title: "FOR WOMEN"
+    },
+    {
+        id: 3,
+        img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
+        title: "MOST LOVED"
+    }
+]
