@@ -17,5 +17,5 @@ const Products = () => {
     </Container>
   )
 }
-//I stoped at 01:06:50 to be cont
+//I stoped at 01:06:50 to be con
 export default Products
