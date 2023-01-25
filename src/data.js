@@ -31,7 +31,7 @@ export const categories = [
     {
         id: 2,
         img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
-        title: "FOR WOMEN"
+        title: "FOR WOMENS"
     },
     {
         id: 3,
