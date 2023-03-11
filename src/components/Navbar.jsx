@@ -61,7 +61,7 @@ const Navbar = () => {
                 </Left>
 
                 <Center>
-                    <Logo>BeautyFragrance</Logo>
+                    <Logo>Shop with me</Logo>
                 </Center>
 
                 <Right>
