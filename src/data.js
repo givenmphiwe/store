@@ -39,7 +39,7 @@ export const categories = [
         title: "MOST LOVED"
     }
 ]
-
+//adding items or products
 export const popularProducts = [
     {
         id: 1,

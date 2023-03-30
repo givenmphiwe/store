@@ -10,7 +10,7 @@ const Container = styled.div`
     font-size: 14px;
     font-weight: 500`;
 
-
+//making the new annouce in the slider
 const Annoucement = () => {
     return (
         <Container>

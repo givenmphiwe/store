@@ -20,6 +20,8 @@ const Info = styled.div`
 
 const Icon = styled.div`
 `;
+
+//main page
 const Product = ({item}) => {
   return (
     <Container>

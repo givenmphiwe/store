@@ -7,7 +7,7 @@ const Container = styled.div`
     padding: 20px;
     justify-content: space-between
 `;
-
+//items are added from data.js files . mappijng them to that
 const Categories = () => {
   return (
     <Container>
