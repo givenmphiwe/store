@@ -1,13 +1,21 @@
-import { Search, ShoppingCartOutlined } from "@mui/icons-material"
+import { Search, ShoppingCartOutlined } from "@mui/icons-material";
 import { Badge } from "@mui/material";
-import React from "react"
-import styled from "styled-components"
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
 
 const Container = styled.div`
     height: 60px;
-`
+    position: fixed; /* Position the navbar fixed at the top */
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #ffffff; /* Set background color */
+    z-index: 1000; /* Set a high z-index to ensure it appears above other content */
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); 
+`;
+
 const Wrapper = styled.div`
-    padding: 10px 20px;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -16,62 +24,83 @@ const Wrapper = styled.div`
 const Language = styled.span`
     font-size: 14px;
     cursor: pointer;
-    `;
+`;
 
 const SearchContainer = styled.div`
     border: 0.5px solid lightgray;
     display: flex;
     align-items: center;
-    margin-left: 25px;
-    padding: 5px`;
+    margin-top: 10px;
+    padding: 5px;
+    width: 150px; /* Set a fixed width for the search container */
+`;
+
 const Input = styled.input`
     border: none;
+    width: 100%;
+    outline: none;
+    font-size: 14px;
 `;
+
 const Left = styled.div`
-    flex: 1;
-    display: flex;
-    align-items: center`;
-
-const Center = styled.div`
-    flex: 1;
-    text-align: center;`;
-const Logo = styled.h1`
-    font-weight: bold;`
-
-const Right = styled.div`
-    flex:1;
     display: flex;
     align-items: center;
-    justify-content: flex-end`;
+`;
+
+const Center = styled.div`
+    text-align: center;
+`;
+
+const Logo = styled.h1`
+    font-weight: bold;
+    font-size: 20px;
+`;
+
+const Right = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
 const MenuItem = styled.div`
     font-size: 14px;
     cursor: pointer;
-    margin-left: 25px`;
+    margin-left: 20px; /* Add margin between menu items */
+`;
 
 const Navbar = () => {
+    const [prevScrollPos, setPrevScrollPos] = useState(0);
+    const [visible, setVisible] = useState(true);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollPos = window.pageYOffset;
+            setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 100);
+            setPrevScrollPos(currentScrollPos);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [prevScrollPos]);
+
     return (
-        <Container>
+        
+        <Container style={{ top: visible ? 0 : "-60px" }}>
             <Wrapper>
                 <Left>
-                    <Language>EN</Language>
+                    {/* <Language>EN</Language> */}
                     <SearchContainer>
-                        <Input/>
+                        <Input placeholder="Search"/>
                         <Search style={{color:"gray", fontSize:16}}/>
                     </SearchContainer>
                 </Left>
-
                 <Center>
                     <Logo>Shop with me</Logo>
                 </Center>
-
                 <Right>
-                    <MenuItem>Register</MenuItem>
-                    <MenuItem>Sign In</MenuItem>
-
                     <MenuItem>
-                    <Badge badgeContent={4} color="primary">
-                        <ShoppingCartOutlined/>
-                    </Badge>
+                        <Badge badgeContent={4} color="primary">
+                            <ShoppingCartOutlined/>
+                        </Badge>
                     </MenuItem>
                 </Right>
             </Wrapper>
@@ -79,4 +108,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default Navbar;

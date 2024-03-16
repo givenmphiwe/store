@@ -37,6 +37,21 @@ export const categories = [
         id: 3,
         img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
         title: "MOST LOVED"
+    },
+    {
+        id: 1,
+        img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
+        title: "FOR MEN"
+    },
+    {
+        id: 2,
+        img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
+        title: "FOR WOMEN"
+    },
+    {
+        id: 3,
+        img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
+        title: "MOST LOVED"
     }
 ]
 //adding items or products
@@ -72,6 +87,7 @@ export const popularProducts = [
     {
         id: 8,
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
-    }
+    },
+    
 ]
 //here dta atcxjhhhhh

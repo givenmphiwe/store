@@ -5,7 +5,8 @@ import CategoryItem from "./CategoryItem"
 const Container = styled.div`
     display: flex;
     padding: 20px;
-    justify-content: space-between
+    justify-content: space-between;
+    margin-top: 60px;
 `;
 //items are added from data.js files . mappijng them to that
 const Categories = () => {
