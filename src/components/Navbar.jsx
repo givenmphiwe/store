@@ -33,6 +33,7 @@ const SearchContainer = styled.div`
     margin-top: 10px;
     padding: 5px;
     width: 150px; /* Set a fixed width for the search container */
+    visibility: ${(props) => (props.hideSearch ? "hidden" : "visible")}; /* Conditionally hide based on props */
 `;
 
 const Input = styled.input`
@@ -49,6 +50,11 @@ const Left = styled.div`
 
 const Center = styled.div`
     text-align: center;
+    margin-left: ${(props) => (props.hideSearch ? "-22rem" : "auto")};
+    @media (min-width: 768px) {
+    margin-left: ${(props) => (props.hideSearch ? "-60rem" : "auto")};
+
+    }
 `;
 
 const Logo = styled.h1`
@@ -67,7 +73,7 @@ const MenuItem = styled.div`
     margin-left: 20px; /* Add margin between menu items */
 `;
 
-const Navbar = () => {
+const Navbar = ({ hideSearchContainer }) => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
 
@@ -83,17 +89,16 @@ const Navbar = () => {
     }, [prevScrollPos]);
 
     return (
-        
         <Container style={{ top: visible ? 0 : "-60px" }}>
             <Wrapper>
                 <Left>
                     {/* <Language>EN</Language> */}
-                    <SearchContainer>
+                    <SearchContainer hideSearch={hideSearchContainer}>
                         <Input placeholder="Search"/>
                         <Search style={{color:"gray", fontSize:16}}/>
                     </SearchContainer>
                 </Left>
-                <Center>
+                <Center hideSearch={hideSearchContainer}>
                     <Logo>Shop with me</Logo>
                 </Center>
                 <Right>

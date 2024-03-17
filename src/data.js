@@ -58,7 +58,19 @@ export const categories = [
 export const popularProducts = [
     {
         id: 1,
-        img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
+        img: "https://img.perfume.com/images/products/parent/medium/791w.webp",
+        additionalImages: [
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
+        ],
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Perfume",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek"
     },
     {
         id: 2,
