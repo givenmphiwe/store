@@ -39,17 +39,17 @@ export const categories = [
         title: "MOST LOVED"
     },
     {
-        id: 1,
+        id: 4,
         img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
         title: "FOR MEN"
     },
     {
-        id: 2,
+        id: 5,
         img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
         title: "FOR WOMEN"
     },
     {
-        id: 3,
+        id: 6,
         img: "https://img.perfume.com/images/products/parent/medium/60546w.webp",
         title: "MOST LOVED"
     }

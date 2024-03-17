@@ -1,5 +1,6 @@
 import { FavoriteBorderOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import styled from "styled-components";
+import {useNavigate} from 'react-router-dom';
 
 const Container = styled.div`
     flex: 1;
@@ -61,8 +62,15 @@ const Description = styled.p`
 
 // Main component
 const Product = ({ item }) => {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        // Navigate to the ProductSelected page with the item ID or any necessary parameter
+        navigate(`/productSelected/${item.id}`); // Example: Use item ID as parameter
+    };
+
     return (
-        <Container>
+        <Container onClick={handleClick}>
             
             <Image src={item.img} alt="Product" />
             <Info>

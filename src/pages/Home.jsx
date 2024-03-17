@@ -13,6 +13,7 @@ const Home = () => {
             <div className="slider-wrapper">
                 <Slider/>
             </div>
+           
             <Categories/>
             <Products/>
             <style jsx>{`
