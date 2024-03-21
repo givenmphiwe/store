@@ -21,6 +21,8 @@ const Products = ({ searchQuery,onCategoryClick }) => {
     // Initialize filteredProducts state
     const [filteredProducts, setFilteredProducts] = useState(popularProducts);
 
+    // Filter products based on search query whenever searchQuery changes
+    
     useEffect(() => {
       let filtered = popularProducts;
 
@@ -41,20 +43,7 @@ const Products = ({ searchQuery,onCategoryClick }) => {
       setFilteredProducts(filtered);
       
   }, [searchQuery, onCategoryClick]);
-    // Filter products based on search query whenever searchQuery changes
-    // useEffect(() => {
-    //     if (searchQuery.trim() === "") {
-    //         // If searchQuery is empty, show all products
-    //         setFilteredProducts(popularProducts);
-    //     } else {
-    //         // Filter products based on searchQuery
-    //         const filtered = popularProducts.filter(item =>
-    //             item.ProductName.toLowerCase().includes(searchQuery.toLowerCase()) 
-    //         );
-    //         setFilteredProducts(filtered);
-    //     }
-        
-    // }, [searchQuery]);
+    
 
     return (
         <Container>
