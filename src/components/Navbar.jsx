@@ -2,6 +2,8 @@ import { Search, ShoppingCartOutlined } from "@mui/icons-material";
 import { Badge } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import {useNavigate} from 'react-router-dom';
+import Product from "./Product";
 
 const Container = styled.div`
     height: 60px;
@@ -76,6 +78,7 @@ const MenuItem = styled.div`
 const Navbar = ({ hideSearchContainer }) => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
+    
 
     useEffect(() => {
         const handleScroll = () => {
@@ -88,6 +91,13 @@ const Navbar = ({ hideSearchContainer }) => {
         return () => window.removeEventListener("scroll", handleScroll);
     }, [prevScrollPos]);
 
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        // Navigate to the ProductSelected page with the item ID or any necessary parameter
+        navigate(`/`); // Example: Use item ID as parameter
+    };
+
     return (
         <Container style={{ top: visible ? 0 : "-60px" }}>
             <Wrapper>
@@ -99,7 +109,7 @@ const Navbar = ({ hideSearchContainer }) => {
                     </SearchContainer>
                 </Left>
                 <Center hideSearch={hideSearchContainer}>
-                    <Logo>Shop with me</Logo>
+                    <Logo onClick={handleClick}>SwiftShop</Logo>
                 </Center>
                 <Right>
                     <MenuItem>

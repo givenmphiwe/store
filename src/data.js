@@ -74,30 +74,109 @@ export const popularProducts = [
     },
     {
         id: 2,
+        additionalImages: [
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
+        ],
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Perfume",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
     },
     {
         id: 3,
+        additionalImages: [
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
+        ],
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Perfume",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
     },
     {
         id: 4,
+        additionalImages: [
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
+        ],
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Perfume",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
     },
     {
         id: 5,
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Perfume",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
     },
     {
         id: 6,
+        additionalImages: [
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
+        ],
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Perfume",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
     },
     {
         id: 7,
+        additionalImages: [
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+            "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
+        ],
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Perfume",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
     },
     {
         id: 8,
+        additionalImages: [
+            "https://img.perfume.com/images/products/parent/medium/791w.webp",
+
+            "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
+        ],
+        Price: "R 590",
+        CancalledPrice: "R 498",
+        ProductName: "Treat",
+        productDescription: "The life sja sdsa",
+        ProductStarRating: "",
+        Reviews: "",
+        Description: "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
         img: "https://img.perfume.com/images/products/parent/medium/791w.webp"
     },
     
