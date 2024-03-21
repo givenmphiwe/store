@@ -57,7 +57,7 @@ const Title = styled.p`
   margin-top: 10px;
 `;
 
-const Categories = () => {
+const Categories = ({ onCategoryClick }) => {
   const scrollRef = useRef(null);
   const [autoScroll, setAutoScroll] = useState(true);
 
@@ -116,9 +116,9 @@ const Categories = () => {
       <CategoriesText>Categories</CategoriesText>
       <Container ref={scrollRef} onScroll={handleContainerScroll}>
         {data.map((item) => (
-          <ItemContainer key={item.id}>
+          <ItemContainer key={item.id} onClick={() => onCategoryClick(item.title)}>
             <Image src={item.img} alt={item.title} />
-            <Title>{item.title}</Title>
+            <Title >{item.title}</Title>
           </ItemContainer>
         ))}
       </Container>

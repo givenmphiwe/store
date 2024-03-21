@@ -75,9 +75,10 @@ const MenuItem = styled.div`
     margin-left: 20px; /* Add margin between menu items */
 `;
 
-const Navbar = ({ hideSearchContainer }) => {
+const Navbar = ({ hideSearchContainer, searchQuery, setSearchQuery }) => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
+    
     
 
     useEffect(() => {
@@ -98,13 +99,18 @@ const Navbar = ({ hideSearchContainer }) => {
         navigate(`/`); // Example: Use item ID as parameter
     };
 
+    console.log()
     return (
         <Container style={{ top: visible ? 0 : "-60px" }}>
             <Wrapper>
                 <Left>
                     {/* <Language>EN</Language> */}
                     <SearchContainer hideSearch={hideSearchContainer}>
-                        <Input placeholder="Search"/>
+                    <Input
+                            placeholder="Search"
+                            value={searchQuery} // Bind input value to searchQuery state
+                            onChange={(e) => setSearchQuery(e.target.value)} 
+                        />
                         <Search style={{color:"gray", fontSize:16}}/>
                     </SearchContainer>
                 </Left>

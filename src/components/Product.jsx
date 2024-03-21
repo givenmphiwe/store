@@ -1,6 +1,6 @@
 import { FavoriteBorderOutlined, ShoppingCartOutlined } from "@mui/icons-material";
 import styled from "styled-components";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     flex: 1;
@@ -71,12 +71,13 @@ const Product = ({ item }) => {
 
     return (
         <Container onClick={handleClick}>
-            
+
             <Image src={item.img} alt="Product" />
             <Info>
-                <Description>The description</Description>
-                <Description>The price</Description>
-                
+                <Description>{item.ProductName}</Description>
+                <Description>{item.Price}</Description>
+
+
             </Info>
         </Container>
     );
