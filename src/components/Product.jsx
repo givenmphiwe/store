@@ -27,9 +27,6 @@ const Container = styled.div`
     }
 `;
 
-const Circle = styled.div`
-`;
-
 const Image = styled.img`
     height: 70%;
     align-self: center;
@@ -40,25 +37,27 @@ const Image = styled.img`
 
 const Info = styled.div`
     display: flex;
-    flex-direction: column; /* Display child elements in a column */
+    position: relative;
+    right: 40px;
+
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px; /* Increase padding for better spacing */
+    align-items: flex-start; 
+    padding-top: 20px; 
 `;
 
-const IconWrapper = styled.div`
-    display: flex;
-    align-items: center;
-`;
 
-const Icon = styled.div`
-    margin: 5px;
-`;
 
 const Description = styled.p`
-    margin-bottom: 5px;
-    
+    margin-bottom: 15px;
+    text-align: left;
+    font-weight: 300;
 `;
+
+const DescriptionPrice = styled.p`
+font-weight: 600;
+font-size: 20px
+`
 
 // Main component
 const Product = ({ item }) => {
@@ -75,10 +74,11 @@ const Product = ({ item }) => {
             <Image src={item.img} alt="Product" />
             <Info>
                 <Description>{item.ProductName}</Description>
-                <Description>{item.Price}</Description>
+                <DescriptionPrice>{item.Price}</DescriptionPrice>
 
 
             </Info>
+           
         </Container>
     );
 };

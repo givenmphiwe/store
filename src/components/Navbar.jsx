@@ -115,7 +115,7 @@ const Navbar = ({ hideSearchContainer, searchQuery, setSearchQuery }) => {
                     </SearchContainer>
                 </Left>
                 <Center hideSearch={hideSearchContainer}>
-                    <Logo onClick={handleClick}>SwiftShop</Logo>
+                    <Logo onClick={handleClick}>SwiftSkin</Logo>
                 </Center>
                 <Right>
                     <MenuItem>

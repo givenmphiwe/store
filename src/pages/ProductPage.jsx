@@ -3,7 +3,8 @@ import { popularProducts } from "../data";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import styled from "styled-components";
-import { Favorite } from "@mui/icons-material"; // Importing the Favorite icon from Material-UI
+import { CalendarMonth,ReplayOutlined } from "@mui/icons-material"; // Importing the Favorite icon from Material-UI
+import { StarRateOutlined,LocalShipping } from "@mui/icons-material";
 
 const Container = styled.div`
   flex: 1;
@@ -74,12 +75,26 @@ const SmallImage = styled.img`
   }
 `;
 
-const LoveIcon = styled(Favorite)`
-  color: red;
+const ReturnIcon = styled(ReplayOutlined)`
+  color: black;
   font-size: 24px;
-  margin-bottom: 10px;
-  cursor: pointer;
+  position: relative;
+top:5px
 `;
+
+const DeliveryIcon = styled(LocalShipping)`
+color: black;
+font-size: 24px;
+position: relative;
+top:5px
+`
+
+const StarDeliveryIcon = styled(StarRateOutlined)`
+color: black;
+font-size: 24px;
+position: relative;
+top:5px
+`
 
 const AddToCartContainer = styled.div`
   position: fixed;
@@ -99,16 +114,18 @@ const AddToCartContainer = styled.div`
 const AddToCartButton = styled.button`
   padding: 10px 20px;
   border-radius: 30px;
-  background-color: #007bff;
+  width: 230px;
+  background-color: #22802f;
   color: white;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
   border: none;
   outline: none;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Tiny shadow */
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #22802f;
   }
 `;
 
@@ -143,6 +160,9 @@ const ReviewLink = styled.span`
 
 const GoldStar = styled.span`
   color: gold;
+`;
+const GoldSta = styled.span`
+  color: grey;
 `;
 
 const RowLine = styled.hr`
@@ -249,11 +269,11 @@ const ProductsPage = () => {
                 <ProductInfo>
                     <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>In Stock</h3>
                     <RowLine />
-                    <GoldStar>★</GoldStar> Eligible for next day delivery
+                    <StarDeliveryIcon/>Eligible for next day delivery
                     <RowLine />
-                    Hassle-Free Exchange & Returns
+                   <ReturnIcon/>Hassle-Free Exchange & Returns
                     <RowLine />
-                    6-Month Limited Warranty
+                   <DeliveryIcon/>{" "}Delivery in 2 - 5 days
                     <RowLine />
                 </ProductInfo>
             </ContainerInStock>
