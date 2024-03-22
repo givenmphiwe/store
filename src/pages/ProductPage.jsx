@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect,useState } from "react";
 import { popularProducts } from "../data";
 import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import SlidingNotification from "../components/SlidingNotification";
 import styled from "styled-components";
-import { CalendarMonth,ReplayOutlined } from "@mui/icons-material"; // Importing the Favorite icon from Material-UI
-import { StarRateOutlined,LocalShipping } from "@mui/icons-material";
+import { CalendarMonth, ReplayOutlined } from "@mui/icons-material"; // Importing the Favorite icon from Material-UI
+import { StarRateOutlined, LocalShipping } from "@mui/icons-material";
 
 const Container = styled.div`
   flex: 1;
@@ -208,117 +209,141 @@ const ShowMoreButton = styled.button`
 `;
 
 const ProductsPage = () => {
-    const { id } = useParams();
-    const product = popularProducts.find((product) => product.id === parseInt(id));
-    const [selectedImage, setSelectedImage] = useState(product?.img || "");
+  const { id } = useParams();
+  const product = popularProducts.find((product) => product.id === parseInt(id));
+  const [selectedImage, setSelectedImage] = useState(product?.img || "");
+  const [showNotification, setShowNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState('');
+  const [cartItemCount, setCartItemCount] = useState(0);
 
-    const handleImageClick = (image) => {
-        setSelectedImage(image);
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+  };
+
+  const randomProducts = popularProducts
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 10);
+
+    const addToCart = (product) => {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      const isItemInCart = cartItems.some(item => item.id === product.id);
+    
+      if (isItemInCart) {
+        // Notify the user that the item is already in the cart
+        setNotificationMessage('Already in your cart.');
+        setShowNotification(true);
+      } else {
+        const newCartItems = [...cartItems, product];
+        localStorage.setItem('cart', JSON.stringify(newCartItems));
+        setCartItemCount(newCartItems.length); // Update the cart item count
+      }
     };
-
-    const randomProducts = popularProducts
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 10);
-
+    
     const handleAddToCart = () => {
-        // Add your logic to add the product to the cart
-        console.log("Product added to cart:", product);
+      addToCart(product);
     };
 
-    const [showFullDescription, setShowFullDescription] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
-    // Function to toggle show/hide full description
-    const toggleDescription = () => {
-        setShowFullDescription(!showFullDescription);
-    };
-
-
-    return (
-        <>
-            <Navbar hideSearchContainer={true} />
-            <Container>
-                {product && <Image src={selectedImage} alt={`Product ${id}`} />}
-                {product && product.additionalImages && product.additionalImages.length > 0 && (
-                    <SmallImagesContainer>
-                        {product.additionalImages.map((image, index) => (
-                            <SmallImage
-                                key={index}
-                                src={image}
-                                alt={`Product ${id} Image ${index}`}
-                                onClick={() => handleImageClick(image)}
-                            />
-                        ))}
-                    </SmallImagesContainer>
-                )}
-            </Container>
-            {product && product.additionalImages && product.additionalImages.length > 0 && (
-                <ProductInfo>
-                    <h2>{product.ProductName}</h2>
-                    <p>{product.productDescription}</p>
-
-                    <ReviewLink>Write a review</ReviewLink> <GoldStar>★</GoldStar>
-                    {product.ProductStarRating}
-
-                    <ProductPrice>
-                        <span style={{ fontWeight: "bold", fontSize: "1.5em" }}>{product.Price}</span>{" "}
-                        <Price>{product.CancalledPrice}</Price>
-                    </ProductPrice>
-                </ProductInfo>
-            )}
-            <ContainerInStock>
-                <ProductInfo>
-                    <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>In Stock</h3>
-                    <RowLine />
-                    <StarDeliveryIcon/>Eligible for next day delivery
-                    <RowLine />
-                   <ReturnIcon/>Hassle-Free Exchange & Returns
-                    <RowLine />
-                   <DeliveryIcon/>{" "}Delivery in 2 - 5 days
-                    <RowLine />
-                </ProductInfo>
-            </ContainerInStock>
+  // Function to toggle show/hide full description
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
 
 
-            <ProductInfo>
-                <h3>You Might Also Like</h3>
-                <SmallImagesContainer>
-                    {randomProducts.map((product, index) => (
+  useEffect(() => {
+    // Scroll to the top of the page when component mounts or updates
+    window.scrollTo(0, 0);
+  }, []);
 
-                        product.id !== parseInt(id) && (
-                            <Link key={index} to={`/productSelected/${product.id}`}>
-                                <div>
-                                    <CircleImage src={product.img} alt={`Product ${product.id}`} />
-                                    <ProductName>{product.ProductName}</ProductName>
-                                </div>
-                            </Link>
-                        )
-                    ))}
-                </SmallImagesContainer>
-            </ProductInfo>
+  return (
+    <>
+      <Navbar hideSearchContainer={true} />
+      <Container>
+        {product && <Image src={selectedImage} alt={`Product ${id}`} />}
+        {product && product.additionalImages && product.additionalImages.length > 0 && (
+          <SmallImagesContainer>
+            {product.additionalImages.map((image, index) => (
+              <SmallImage
+                key={index}
+                src={image}
+                alt={`Product ${id} Image ${index}`}
+                onClick={() => handleImageClick(image)}
+              />
+            ))}
+          </SmallImagesContainer>
+        )}
+      </Container>
+      {product && product.additionalImages && product.additionalImages.length > 0 && (
+        <ProductInfo>
+          <h2>{product.ProductName}</h2>
+          <p>{product.productDescription}</p>
 
-            <ContainerDescription>
-                <ProductInfo>
-                    <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Description</h3>
-                    {product && product.additionalImages && product.additionalImages.length > 0 && (
-                        <>
-                            <div dangerouslySetInnerHTML={{ __html: showFullDescription ? product.Description : product.Description.slice(0, 100) }} style={{ whiteSpace: 'pre-line' }} />
-                            {product.Description.length > 100 && (
-                               <ShowMoreButtonContainer>
-                               <ShowMoreButton onClick={toggleDescription}>
-                                 {showFullDescription ? "Show Less" : "Show More"}
-                               </ShowMoreButton>
-                             </ShowMoreButtonContainer>
-                            )}
-                        </>
-                    )}
-                </ProductInfo>
-            </ContainerDescription>
+          <ReviewLink>Write a review</ReviewLink> <GoldStar>★</GoldStar>
+          {product.ProductStarRating}
 
-            <AddToCartContainer>
-                <AddToCartButton onClick={handleAddToCart}>Add to Cart</AddToCartButton>
-            </AddToCartContainer>
-        </>
-    );
+          <ProductPrice>
+            <span style={{ fontWeight: "bold", fontSize: "1.5em" }}>{product.Price}</span>{" "}
+            <Price>{product.CancalledPrice}</Price>
+          </ProductPrice>
+        </ProductInfo>
+      )}
+      <ContainerInStock>
+        <ProductInfo>
+          <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>In Stock</h3>
+          <RowLine />
+          <StarDeliveryIcon />Eligible for next day delivery
+          <RowLine />
+          <ReturnIcon />Hassle-Free Exchange & Returns
+          <RowLine />
+          <DeliveryIcon />{" "}Delivery in 2 - 5 days
+          <RowLine />
+        </ProductInfo>
+      </ContainerInStock>
+
+
+      <ProductInfo>
+        <h3>You Might Also Like</h3>
+        <SmallImagesContainer>
+          {randomProducts.map((product, index) => (
+
+            product.id !== parseInt(id) && (
+              <Link key={index} to={`/productSelected/${product.id}`}>
+                <div>
+                  <CircleImage src={product.img} alt={`Product ${product.id}`} />
+                  <ProductName>{product.ProductName}</ProductName>
+                </div>
+              </Link>
+            )
+          ))}
+        </SmallImagesContainer>
+      </ProductInfo>
+      
+      <ContainerDescription>
+        <ProductInfo>
+          <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Description</h3>
+          {product && product.additionalImages && product.additionalImages.length > 0 && (
+            <>
+              <div dangerouslySetInnerHTML={{ __html: showFullDescription ? product.Description : product.Description.slice(0, 100) }} style={{ whiteSpace: 'pre-line' }} />
+              {product.Description.length > 100 && (
+                <ShowMoreButtonContainer>
+                  <ShowMoreButton onClick={toggleDescription}>
+                    {showFullDescription ? "Show Less" : "Show More"}
+                  </ShowMoreButton>
+                </ShowMoreButtonContainer>
+              )}
+            </>
+          )}
+        </ProductInfo>
+      </ContainerDescription>
+      
+      <AddToCartContainer>
+        <AddToCartButton onClick={handleAddToCart}>Add to Cart</AddToCartButton>
+      </AddToCartContainer>
+      
+    </>
+  );
 };
 
 export default ProductsPage;

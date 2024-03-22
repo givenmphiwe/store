@@ -78,8 +78,15 @@ const MenuItem = styled.div`
 const Navbar = ({ hideSearchContainer, searchQuery, setSearchQuery }) => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
+    const [cartItemCount, setCartItemCount] = useState(0);
     
     
+// Update cart item count from localStorage on component mount
+useEffect(() => {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    setCartItemCount(cartItems.length);
+    console.log("The cart items",cartItems)
+}, [localStorage.getItem('cart')]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -119,7 +126,7 @@ const Navbar = ({ hideSearchContainer, searchQuery, setSearchQuery }) => {
                 </Center>
                 <Right>
                     <MenuItem>
-                        <Badge badgeContent={4} color="primary">
+                        <Badge badgeContent={cartItemCount} color="primary">
                             <ShoppingCartOutlined/>
                         </Badge>
                     </MenuItem>
