@@ -85,7 +85,7 @@ const Navbar = ({ hideSearchContainer, searchQuery, setSearchQuery }) => {
 useEffect(() => {
     const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
     setCartItemCount(cartItems.length);
-    console.log("The cart items",cartItems)
+    // console.log("The cart items",cartItems)
 }, [localStorage.getItem('cart')]);
 
     useEffect(() => {
@@ -105,6 +105,10 @@ useEffect(() => {
         // Navigate to the ProductSelected page with the item ID or any necessary parameter
         navigate(`/`); // Example: Use item ID as parameter
     };
+
+    const handleCartClick = () => {
+        navigate(`/cart`);
+    }
 
     console.log()
     return (
@@ -127,7 +131,7 @@ useEffect(() => {
                 <Right>
                     <MenuItem>
                         <Badge badgeContent={cartItemCount} color="primary">
-                            <ShoppingCartOutlined/>
+                            <ShoppingCartOutlined onClick={handleCartClick}/>
                         </Badge>
                     </MenuItem>
                 </Right>
