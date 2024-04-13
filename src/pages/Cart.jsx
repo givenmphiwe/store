@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import { CancelOutlined, DoNotDisturbAltOutlined } from '@mui/icons-material'; // Importing the cancel icon
+import { DoNotDisturbAltOutlined } from '@mui/icons-material'; // Importing the cancel icon
 
 const Container = styled.div`
     flex: 1;
@@ -74,44 +74,124 @@ const RemoveButton = styled.button`
     justify-content: center;
 `;
 
+const CheckoutContainer = styled.div`
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  width: 100%;
+  display: flex; /* Add flexbox */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  transform: translateX(-50%);
+  z-index: 999; /* Ensure it stays above other elements */
+  background-color: white;
+  border: 1px solid #ccc; /* Add border for visual separation */
+  border-radius: 10px;
+`;
+
+const AddCheckOutButton = styled.button`
+  padding: 10px 20px;
+  border-radius: 30px;
+  width: 200px;
+  background-color: #22802f;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  margin-right: 20px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Tiny shadow */
+
+  &:hover {
+    background-color: #22802f;
+  }
+`;
+
+const QuantityContainer = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const QuantityButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 16px;
+`;
+
+const QuantityDisplay = styled.span`
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+`;
+
+const updateTotalPrice = (items) => {
+    const totalPrice = items.reduce((total, item) => {
+        console.log('item:', item);
+        const price = parseFloat(item.Price.replace("R ", ""));
+        console.log('price:', price);
+        console.log('quantity:', item.quantity);
+        return total + price * item.quantity;
+    }, 0).toFixed(2);
+
+    console.log('totalPrice:', totalPrice);
+    return totalPrice;
+};
 // Main component
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
+    const [totalCartPrice, setTotalCartPrice] = useState(0);
+
+
 
     useEffect(() => {
         const cartData = localStorage.getItem('cart');
+        console.log('cartData:', cartData);
         if (cartData) {
             const parsedCartItems = JSON.parse(cartData);
+
             setCartItems(parsedCartItems);
+            const totalPrice = updateTotalPrice(parsedCartItems);
+
+            setTotalCartPrice(totalPrice);
         }
     }, []);
+
+
 
     const removeFromCart = (index) => {
         const updatedCartItems = [...cartItems];
         updatedCartItems.splice(index, 1);
         setCartItems(updatedCartItems);
+        setTotalCartPrice(updateTotalPrice(updatedCartItems));
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
-    const handleQuantityChange = (index, event) => {
+    const handleIncrement = (index) => {
         const updatedCartItems = [...cartItems];
-        const newQuantity = event.target.value;
-        const price = parseFloat(updatedCartItems[index].Price.replace("R ", "").trim());
-        const newTotalPrice = price * newQuantity;
-        
-        updatedCartItems[index].quantity = newQuantity;
-        updatedCartItems[index].totalPrice = `R ${newTotalPrice.toFixed(2)}`; // Format to two decimal places
-        
+        updatedCartItems[index].quantity++;
         setCartItems(updatedCartItems);
+        const totalPrice = updateTotalPrice(updatedCartItems); // Update total price
+        setTotalCartPrice(totalPrice);
         localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     };
 
-    console.log("The cart items", cartItems);
-
+    const handleDecrement = (index) => {
+        const updatedCartItems = [...cartItems];
+        if (updatedCartItems[index].quantity > 1) {
+            updatedCartItems[index].quantity--;
+            setCartItems(updatedCartItems);
+            const totalPrice = updateTotalPrice(updatedCartItems); // Update total price
+            setTotalCartPrice(totalPrice);
+            localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+        }
+    };
     return (
         <div>
             <Navbar hideSearchContainer={true} />
-            <Space/>
+            <Space />
             {cartItems.map((item, index) => (
                 <Container key={index}>
                     <RemoveButton onClick={() => removeFromCart(index)}>
@@ -124,17 +204,22 @@ const Cart = () => {
                     </Info>
                     <Info>
                         <strong>QUANTITY</strong>
-                        <Quantity
-                            type="number"
-                            min="1"
-                            value={item.quantity}
-                            onChange={(event) => handleQuantityChange(index, event)}
-                        />
+                        <QuantityContainer>
+                            <QuantityButton onClick={() => handleDecrement(index)}>-</QuantityButton>
+                            <QuantityDisplay>{item.quantity}</QuantityDisplay>
+                            <QuantityButton onClick={() => handleIncrement(index)}>+</QuantityButton>
+                        </QuantityContainer>
                     </Info>
                 </Container>
             ))}
+
+            <CheckoutContainer>
+                <AddCheckOutButton>CheckOut</AddCheckOutButton>
+                <p style={{ fontSize: '20px', color: 'black', fontWeight: 600 }}>TOTAL R{totalCartPrice}</p>
+            </CheckoutContainer>
         </div>
     );
 };
 
 export default Cart;
+

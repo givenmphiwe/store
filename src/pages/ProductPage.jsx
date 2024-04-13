@@ -234,7 +234,9 @@ const ProductsPage = () => {
         setNotificationMessage('Already in your cart.');
         setShowNotification(true);
       } else {
-        const newCartItems = [...cartItems, product];
+        // Add quantity property to the product
+        const productWithQuantity = { ...product, quantity: 1 };
+        const newCartItems = [...cartItems, productWithQuantity];
         localStorage.setItem('cart', JSON.stringify(newCartItems));
         setCartItemCount(newCartItems.length); // Update the cart item count
       }
