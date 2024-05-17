@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
 import { DoNotDisturbAltOutlined } from '@mui/icons-material'; // Importing the cancel icon
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
     flex: 1;
@@ -143,6 +144,7 @@ const updateTotalPrice = (items) => {
 const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [totalCartPrice, setTotalCartPrice] = useState(0);
+    const navigate = useNavigate();
 
 
 
@@ -188,6 +190,11 @@ const Cart = () => {
             localStorage.setItem('cart', JSON.stringify(updatedCartItems));
         }
     };
+
+    const handleCheckoutClick = () => {
+        navigate(`/checkout`);
+    }
+
     return (
         <div>
             <Navbar hideSearchContainer={true} />
@@ -214,7 +221,7 @@ const Cart = () => {
             ))}
 
             <CheckoutContainer>
-                <AddCheckOutButton>CheckOut</AddCheckOutButton>
+                <AddCheckOutButton onClick={handleCheckoutClick}>CheckOut</AddCheckOutButton>
                 <p style={{ fontSize: '20px', color: 'black', fontWeight: 600 }}>TOTAL R{totalCartPrice}</p>
             </CheckoutContainer>
         </div>
