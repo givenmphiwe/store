@@ -9,7 +9,19 @@ import {
   faLocationArrow,
 } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../components/Navbar";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+
+const provinces = [
+  "Eastern Cape",
+  "Free State",
+  "Gauteng",
+  "KwaZulu-Natal",
+  "Limpopo",
+  "Mpumalanga",
+  "Northern Cape",
+  "North West",
+  "Western Cape",
+];
 
 const CheckoutContainer = styled.div`
   margin-top: 70px;
@@ -48,11 +60,26 @@ const FormLabel = styled.label`
   font-weight: bold;
 `;
 
-const FormSelect = styled.select`
-  width: 95%;
-  padding: 10px 10px 10px 40px;
+const ProvinceContainer = styled.div`
+  display: ${(props) => (props.show ? "block" : "none")};
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: #fff;
+  z-index: 10;
+`;
+
+const ProvinceCard = styled.div`
+  padding: 5px 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f0f0f0;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -73,22 +100,12 @@ const CheckOut = () => {
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState("");
   const [price, setPrice] = useState(0);
-
-  // Define prices based on location
-  const locationPrices = {
-    Gauteng: 10,
-    "Outside Gauteng": 20,
-    // Add more locations and prices as needed
-  };
-
- 
+  const [showProvinces, setShowProvinces] = useState(false);
 
   const navigate = useNavigate();
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Prepare data to be passed to the next page
     const formData = {
       name,
       email,
@@ -98,10 +115,14 @@ const CheckOut = () => {
       location,
       price,
     };
-
-    // Navigate to the next page while passing form data as state
     navigate("/nextPage", { formData });
   };
+
+  const handleProvinceClick = (province) => {
+    setProvince(province);
+    setShowProvinces(false);
+  };
+
   return (
     <>
       <Navbar hideCartIcon={true} hideSearchContainer={true} />
@@ -140,7 +161,6 @@ const CheckOut = () => {
             <FormInput
               type="number"
               id="phone"
-              
               placeholder="e.g 0720877233"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -149,26 +169,48 @@ const CheckOut = () => {
           </FormGroup>
 
           <FormLabel htmlFor="province">Province</FormLabel>
-<FormGroup>
-  <FormIcon icon={faMapMarkedAlt} />
-  <FormSelect
-    id="province"
-    value={province}
-    onChange={(e) => setProvince(e.target.value)}
-    required
-  >
-    <option value="">Select your province</option>
-    <option value="Eastern Cape">Eastern Cape</option>
-    <option value="Free State">Free State</option>
-    <option value="Gauteng">Gauteng</option>
-    <option value="KwaZulu-Natal">KwaZulu-Natal</option>
-    <option value="Limpopo">Limpopo</option>
-    <option value="Mpumalanga">Mpumalanga</option>
-    <option value="Northern Cape">Northern Cape</option>
-    <option value="North West">North West</option>
-    <option value="Western Cape">Western Cape</option>
-  </FormSelect>
-</FormGroup>
+          <FormGroup>
+            <FormIcon icon={faMapMarkedAlt} />
+            <FormInput
+              type="text"
+              id="province"
+              placeholder="Select your province"
+              value={province}
+              onFocus={() => setShowProvinces(true)}
+              onChange={(e) => {
+                setProvince(e.target.value);
+                setShowProvinces(true);
+              }}
+              required
+            />
+            <ProvinceContainer show={showProvinces}>
+              {provinces
+                .filter((provinceItem) =>
+                  provinceItem.toLowerCase().includes(province.toLowerCase())
+                )
+                .map((province, index) => (
+                  <ProvinceCard
+                    key={index}
+                    onClick={() => handleProvinceClick(province)}
+                  >
+                    {province}
+                  </ProvinceCard>
+                ))}
+            </ProvinceContainer>
+          </FormGroup>
+
+          <FormLabel htmlFor="address">Address</FormLabel>
+          <FormGroup>
+            <FormIcon icon={faLocationArrow} />
+            <FormInput
+              type="text"
+              id="address"
+              placeholder="Enter your delivery address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </FormGroup>
 
           <FormLabel htmlFor="address">Address</FormLabel>
           <FormGroup>
