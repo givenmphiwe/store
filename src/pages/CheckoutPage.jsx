@@ -1,8 +1,19 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React, { useState } from "react";
+import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faUser,
+  faEnvelope,
+  faPhone,
+  faMapMarkedAlt,
+  faLocationArrow,
+} from "@fortawesome/free-solid-svg-icons";
+import Navbar from "../components/Navbar";
 
 const CheckoutContainer = styled.div`
-  margin-top: 50px;
+  margin-top: 70px;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 const CheckoutForm = styled.form`
@@ -12,9 +23,21 @@ const CheckoutForm = styled.form`
   margin: 0 auto;
 `;
 
-const FormInput = styled.input`
+const FormGroup = styled.div`
+  position: relative;
   margin-bottom: 20px;
-  padding: 10px;
+`;
+
+const FormIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #ccc;
+`;
+
+const FormInput = styled.input`
+  width: 80%;
+  padding: 10px 10px 10px 40px;
   border: 1px solid #ccc;
   border-radius: 5px;
 `;
@@ -25,8 +48,8 @@ const FormLabel = styled.label`
 `;
 
 const FormSelect = styled.select`
-  margin-bottom: 20px;
-  padding: 10px;
+  width: 100%;
+  padding: 10px 10px 10px 40px;
   border: 1px solid #ccc;
   border-radius: 5px;
 `;
@@ -37,26 +60,38 @@ const SubmitButton = styled.button`
   background-color: #22802f;
   color: white;
   border: none;
+  width: 90%;
   cursor: pointer;
 `;
 
 const CheckOut = () => {
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [location, setLocation] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [province, setProvince] = useState("");
+  const [address, setAddress] = useState("");
+  const [location, setLocation] = useState("");
   const [price, setPrice] = useState(0);
 
   // Define prices based on location
   const locationPrices = {
     Gauteng: 10,
-    'Outside Gauteng': 20,
+    "Outside Gauteng": 20,
     // Add more locations and prices as needed
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add your logic for handling form submission here
-    console.log('Form submitted:', { name, address, location, price });
+    console.log("Form submitted:", {
+      name,
+      email,
+      phone,
+      province,
+      address,
+      location,
+      price,
+    });
   };
 
   const handleLocationChange = (e) => {
@@ -66,31 +101,81 @@ const CheckOut = () => {
   };
 
   return (
-    <CheckoutContainer>
-      <h2>Checkout</h2>
+    <>
+      <Navbar hideCartIcon={true} hideSearchContainer={true} />
+      <CheckoutContainer>
+        <h2>Complete Your Purchase</h2>
+        <CheckoutForm onSubmit={handleSubmit}>
+          <FormLabel htmlFor="name">Name</FormLabel>
+          <FormGroup>
+            <FormIcon icon={faUser} />
+            <FormInput
+              type="text"
+              id="name"
+              placeholder="Name and Surname"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </FormGroup>
 
-      <p>I need to add the products Data to be shipped out</p>
-      <CheckoutForm onSubmit={handleSubmit}>
-        <FormLabel htmlFor="name">Name:</FormLabel>
-        <FormInput
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <FormLabel htmlFor="address">Address:</FormLabel>
-        <FormInput
-          type="text"
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          required
-        />
-        
-        <SubmitButton type="submit">Proceed</SubmitButton>
-      </CheckoutForm>
-    </CheckoutContainer>
+          <FormLabel htmlFor="email">Email Address</FormLabel>
+          <FormGroup>
+            <FormIcon icon={faEnvelope} />
+            <FormInput
+              type="email"
+              id="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </FormGroup>
+
+          <FormLabel htmlFor="phone">Phone Number</FormLabel>
+          <FormGroup>
+            <FormIcon icon={faPhone} />
+            <FormInput
+              type="number"
+              id="phone"
+              max="12"
+              placeholder="e.g 0720877233"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          </FormGroup>
+
+          <FormLabel htmlFor="province">Province</FormLabel>
+          <FormGroup>
+            <FormIcon icon={faMapMarkedAlt} />
+            <FormInput
+              type="text"
+              id="province"
+              placeholder="Select your province"
+              value={province}
+              onChange={(e) => setProvince(e.target.value)}
+              required
+            />
+          </FormGroup>
+
+          <FormLabel htmlFor="address">Address</FormLabel>
+          <FormGroup>
+            <FormIcon icon={faLocationArrow} />
+            <FormInput
+              type="text"
+              id="address"
+              placeholder="Enter your delivery address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              required
+            />
+          </FormGroup>
+
+          <SubmitButton type="submit">Proceed</SubmitButton>
+        </CheckoutForm>
+      </CheckoutContainer>
+    </>
   );
 };
 

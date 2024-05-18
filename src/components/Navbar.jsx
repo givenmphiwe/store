@@ -73,9 +73,10 @@ const MenuItem = styled.div`
     font-size: 14px;
     cursor: pointer;
     margin-left: 20px; /* Add margin between menu items */
+    visibility: ${(props) => (props.hideIcon ? "hidden" : "visible")};
 `;
 
-const Navbar = ({ hideSearchContainer, searchQuery, setSearchQuery }) => {
+const Navbar = ({ hideSearchContainer, searchQuery, setSearchQuery,hideCartIcon }) => {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
     const [cartItemCount, setCartItemCount] = useState(0);
@@ -129,7 +130,7 @@ useEffect(() => {
                     <Logo onClick={handleClick}>SwiftSkin</Logo>
                 </Center>
                 <Right>
-                    <MenuItem>
+                    <MenuItem hideIcon={hideCartIcon}>
                         <Badge badgeContent={cartItemCount} color="primary">
                             <ShoppingCartOutlined onClick={handleCartClick}/>
                         </Badge>
