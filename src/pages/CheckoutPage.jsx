@@ -9,6 +9,7 @@ import {
   faLocationArrow,
 } from "@fortawesome/free-solid-svg-icons";
 import Navbar from "../components/Navbar";
+import { useNavigate } from 'react-router-dom';
 
 const CheckoutContainer = styled.div`
   margin-top: 70px;
@@ -48,7 +49,7 @@ const FormLabel = styled.label`
 `;
 
 const FormSelect = styled.select`
-  width: 100%;
+  width: 95%;
   padding: 10px 10px 10px 40px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -80,10 +81,15 @@ const CheckOut = () => {
     // Add more locations and prices as needed
   };
 
+ 
+
+  const navigate = useNavigate();
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your logic for handling form submission here
-    console.log("Form submitted:", {
+    // Prepare data to be passed to the next page
+    const formData = {
       name,
       email,
       phone,
@@ -91,15 +97,11 @@ const CheckOut = () => {
       address,
       location,
       price,
-    });
-  };
+    };
 
-  const handleLocationChange = (e) => {
-    const selectedLocation = e.target.value;
-    setLocation(selectedLocation);
-    setPrice(locationPrices[selectedLocation]); // Set price based on selected location
+    // Navigate to the next page while passing form data as state
+    navigate("/nextPage", { formData });
   };
-
   return (
     <>
       <Navbar hideCartIcon={true} hideSearchContainer={true} />
@@ -138,7 +140,7 @@ const CheckOut = () => {
             <FormInput
               type="number"
               id="phone"
-              max="12"
+              
               placeholder="e.g 0720877233"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -147,17 +149,26 @@ const CheckOut = () => {
           </FormGroup>
 
           <FormLabel htmlFor="province">Province</FormLabel>
-          <FormGroup>
-            <FormIcon icon={faMapMarkedAlt} />
-            <FormInput
-              type="text"
-              id="province"
-              placeholder="Select your province"
-              value={province}
-              onChange={(e) => setProvince(e.target.value)}
-              required
-            />
-          </FormGroup>
+<FormGroup>
+  <FormIcon icon={faMapMarkedAlt} />
+  <FormSelect
+    id="province"
+    value={province}
+    onChange={(e) => setProvince(e.target.value)}
+    required
+  >
+    <option value="">Select your province</option>
+    <option value="Eastern Cape">Eastern Cape</option>
+    <option value="Free State">Free State</option>
+    <option value="Gauteng">Gauteng</option>
+    <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+    <option value="Limpopo">Limpopo</option>
+    <option value="Mpumalanga">Mpumalanga</option>
+    <option value="Northern Cape">Northern Cape</option>
+    <option value="North West">North West</option>
+    <option value="Western Cape">Western Cape</option>
+  </FormSelect>
+</FormGroup>
 
           <FormLabel htmlFor="address">Address</FormLabel>
           <FormGroup>
