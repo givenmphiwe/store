@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import ProductsPage from './pages/ProductPage';
 import Cart from './pages/Cart';
 import CheckOut from './pages/CheckoutPage';
+import FinalCheckOut from './pages/FinalCheckOutPage';
 
 const App = () => {
   return (
@@ -14,6 +15,7 @@ const App = () => {
           <Route path="/productSelected/:id" element={<ProductsPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<CheckOut/>}/>
+          <Route path="/FinalCheckOut" element={<FinalCheckOut/>}/>
           {/* Add additional routes for other pages as needed */}
           <Route path="*" element={<div>Page not found</div>} />
         </Routes>

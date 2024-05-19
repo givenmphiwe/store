@@ -115,7 +115,7 @@ const CheckOut = () => {
       location,
       price,
     };
-    navigate("/nextPage", { formData });
+    navigate("/FinalCheckOut", { formData });
   };
 
   const handleProvinceClick = (province) => {
@@ -199,18 +199,7 @@ const CheckOut = () => {
             </ProvinceContainer>
           </FormGroup>
 
-          <FormLabel htmlFor="address">Address</FormLabel>
-          <FormGroup>
-            <FormIcon icon={faLocationArrow} />
-            <FormInput
-              type="text"
-              id="address"
-              placeholder="Enter your delivery address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </FormGroup>
+    
 
           <FormLabel htmlFor="address">Address</FormLabel>
           <FormGroup>
