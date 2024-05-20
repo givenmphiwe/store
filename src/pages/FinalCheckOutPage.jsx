@@ -69,15 +69,18 @@ const FinalCheckOut = () => {
 
   const calculateDeliveryFee = (province, cartPrice) => {
     const deliveryFees = {
-      Gauteng: cartPrice > 500 ? 0 : 50,
-      Mpumalanga: 70,
-
-      // Example:
-      // 'Western Cape': 60,
-      // 'KwaZulu-Natal': 65,
+      'Gauteng': cartPrice > 500 ? 0 : 50,
+      'Mpumalanga': 70,
+      'Limpopo': 50,
+      'Eastern Cape': 80,
+      'Free State': 90,
+      'Northern Cape': 90,
+      'North West': 65,
+      'Western Cape': 60,
+      'KwaZulu-Natal': 65,
     };
 
-    return deliveryFees[province] || 0; // Default delivery fee if the province is not listed
+    return deliveryFees[province] || 0;
   };
 
   const deliveryFee = formData
