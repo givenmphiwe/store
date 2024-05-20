@@ -126,17 +126,7 @@ const FinalCheckOut = () => {
         </tfoot>
       </Table>
 
-      {formData ? (
-        <div>
-          <p>Name: {formData.name}</p>
-          <p>Email: {formData.email}</p>
-          <p>Phone: {formData.phone}</p>
-          <p>Province: {formData.province}</p>
-          <p>Address: {formData.address}</p>
-        </div>
-      ) : (
-        <p>No data available</p>
-      )}
+      
     </>
   );
 };
