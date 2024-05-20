@@ -87,7 +87,8 @@ const FinalCheckOut = () => {
     ? calculateDeliveryFee(formData.province, totalCartPrice)
     : 0;
 
-  // const paymentTotal = deliveryFee + totalCartPrice ;
+    const paymentTotal = parseFloat(deliveryFee) + parseFloat(totalCartPrice);
+
 
   return (
     <>
@@ -122,7 +123,7 @@ const FinalCheckOut = () => {
           </tr>
           <tr>
             <Total colSpan="3">Total</Total>
-            <TotalAmount>R{totalCartPrice}</TotalAmount>
+            <TotalAmount>R{paymentTotal}</TotalAmount>
           </tr>
         </tfoot>
       </Table>
