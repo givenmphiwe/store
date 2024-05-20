@@ -47,6 +47,28 @@ const TotalAmount = styled.td`
   font-weight: bolder;
 `;
 
+const SubmitButton = styled.button`
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #22802f;
+  color: white;
+  border: none;
+  align-content: center;
+  display: flex;
+  font-size: 18px;
+  font-weight: bolder;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center; /* Added this line */
+  cursor: pointer;
+  margin: auto;
+  margin-top: 70px;
+
+  @media (max-width: 768px) {
+    /* Add specific styling for smaller screens if needed */
+  }
+`;
+
 const FinalCheckOut = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
@@ -87,8 +109,7 @@ const FinalCheckOut = () => {
     ? calculateDeliveryFee(formData.province, totalCartPrice)
     : 0;
 
-    const paymentTotal = parseFloat(deliveryFee) + parseFloat(totalCartPrice);
-
+  const paymentTotal = parseFloat(deliveryFee) + parseFloat(totalCartPrice);
 
   return (
     <>
@@ -127,6 +148,8 @@ const FinalCheckOut = () => {
           </tr>
         </tfoot>
       </Table>
+
+      <SubmitButton type="submit">PAY NOW</SubmitButton>
     </>
   );
 };
