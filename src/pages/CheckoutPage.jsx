@@ -112,10 +112,9 @@ const CheckOut = () => {
       phone,
       province,
       address,
-      location,
-      price,
     };
-    navigate("/FinalCheckOut", { formData });
+    localStorage.setItem("formData", JSON.stringify(formData));
+    navigate("/FinalCheckOut");
   };
 
   const handleProvinceClick = (province) => {
@@ -198,8 +197,6 @@ const CheckOut = () => {
                 ))}
             </ProvinceContainer>
           </FormGroup>
-
-    
 
           <FormLabel htmlFor="address">Address</FormLabel>
           <FormGroup>
