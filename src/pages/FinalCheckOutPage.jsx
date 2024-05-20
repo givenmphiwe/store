@@ -35,8 +35,8 @@ const Td = styled.td`
 
 const Total = styled.td`
   border-bottom: 1px solid #ddd;
-  padding-left: 20px;
-  text-align: left;
+
+  text-align: right;
   font-weight: bolder;
 `;
 
@@ -69,15 +69,15 @@ const FinalCheckOut = () => {
 
   const calculateDeliveryFee = (province, cartPrice) => {
     const deliveryFees = {
-      'Gauteng': cartPrice > 500 ? 0 : 50,
-      'Mpumalanga': 70,
-      'Limpopo': 50,
-      'Eastern Cape': 80,
-      'Free State': 90,
-      'Northern Cape': 90,
-      'North West': 65,
-      'Western Cape': 60,
-      'KwaZulu-Natal': 65,
+      Gauteng: cartPrice > 500 ? 0 : 50,
+      Mpumalanga: 70.0,
+      Limpopo: 50.0,
+      "Eastern Cape": 80.0,
+      "Free State": 90.0,
+      "Northern Cape": 90.0,
+      "North West": 65.0,
+      "Western Cape": 60.0,
+      "KwaZulu-Natal": 65.0,
     };
 
     return deliveryFees[province] || 0;
@@ -86,7 +86,8 @@ const FinalCheckOut = () => {
   const deliveryFee = formData
     ? calculateDeliveryFee(formData.province, totalCartPrice)
     : 0;
-  const paymentTotal = totalCartPrice + deliveryFee;
+
+  // const paymentTotal = deliveryFee + totalCartPrice ;
 
   return (
     <>
@@ -117,16 +118,14 @@ const FinalCheckOut = () => {
         <tfoot>
           <tr>
             <Total colSpan="3">Delivery Fee</Total>
-            <TotalAmount>{deliveryFee}</TotalAmount>
+            <TotalAmount>R{deliveryFee}</TotalAmount>
           </tr>
           <tr>
             <Total colSpan="3">Total</Total>
-            <TotalAmount>{paymentTotal}</TotalAmount>
+            <TotalAmount>R{totalCartPrice}</TotalAmount>
           </tr>
         </tfoot>
       </Table>
-
-      
     </>
   );
 };
