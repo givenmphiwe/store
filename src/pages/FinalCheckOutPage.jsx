@@ -35,7 +35,6 @@ const Td = styled.td`
 
 const Total = styled.td`
   border-bottom: 1px solid #ddd;
-
   text-align: right;
   font-weight: bolder;
 `;
@@ -59,8 +58,7 @@ const SubmitButton = styled.button`
   font-weight: bolder;
   justify-content: center;
   cursor: pointer;
-  align-items: center; /* Added this line */
-  cursor: pointer;
+  align-items: center;
   margin: auto;
   margin-top: 70px;
 
@@ -73,6 +71,7 @@ const FinalCheckOut = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
   const [formData, setFormData] = useState(null);
+  const [payFastView, setPayFastView] = useState("");
 
   useEffect(() => {
     const cartData = localStorage.getItem("cart");
@@ -94,12 +93,12 @@ const FinalCheckOut = () => {
       Gauteng: cartPrice > 500 ? 0 : 50,
       Mpumalanga: 70.0,
       Limpopo: 50.0,
-      "Eastern Cape": 80.0,
+      "Eastern Cape": 120.0,
       "Free State": 90.0,
       "Northern Cape": 90.0,
-      "North West": 65.0,
-      "Western Cape": 60.0,
-      "KwaZulu-Natal": 65.0,
+      "North West": 95.0,
+      "Western Cape": 55.0,
+      "KwaZulu-Natal": 155.0,
     };
 
     return deliveryFees[province] || 0;
@@ -110,6 +109,70 @@ const FinalCheckOut = () => {
     : 0;
 
   const paymentTotal = parseFloat(deliveryFee) + parseFloat(totalCartPrice);
+
+  const initiatePayment = async () => {
+    
+    try {
+      const response = await fetch("http://localhost:3000/initiate-payment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productName: cartItems.map((item) => item.ProductName).join(", "),
+          productQuantity: cartItems.reduce((total, item) => total + item.quantity, 0).toString(),
+          paymentTotal: paymentTotal.toString(),
+          userName: formData.name,
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+          address: formData.address,
+        }),
+      });
+  
+      if (response.ok) {
+        const paymentData = await response.json();
+        console.log("Payment ID:", paymentData.paymentId);
+        // Assuming the backend returns a URL or payment ID for redirection
+        setPayFastView(paymentData.paymentId);
+  
+        // Redirect to payment gateway
+        
+      } else {
+        throw new Error("Failed to initiate payment");
+      }
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (payFastView) {
+      const script = document.createElement("script");
+      script.src = "https://www.payfast.co.za/onsite/engine.js";
+      script.async = true;
+      script.onload = () => {
+        // @ts-ignore
+        window.payfast_do_onsite_payment(
+          { uuid: payFastView },
+          function (result) {
+            if (result === true) {
+              // Payment Completed
+              
+            } else {
+              // Payment Window Closed
+            }
+          }
+        );
+      };
+      document.body.appendChild(script);
+
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
+  
+  }, [payFastView]);
+  
 
   return (
     <>
@@ -149,7 +212,7 @@ const FinalCheckOut = () => {
         </tfoot>
       </Table>
 
-      <SubmitButton type="submit">PAY NOW</SubmitButton>
+      <SubmitButton onClick={initiatePayment}>PAY NOW</SubmitButton>
     </>
   );
 };
