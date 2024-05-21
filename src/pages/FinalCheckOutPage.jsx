@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
+import Modal from "react-modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 const updateTotalPrice = (items) => {
@@ -67,11 +70,33 @@ const SubmitButton = styled.button`
   }
 `;
 
+const DoneButtonModal = styled.button`
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #22802f;
+  color: white;
+  border: none;
+  align-content: center;
+  display: flex;
+  font-size: 18px;
+  font-weight: bolder;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  margin: auto;
+
+  @media (max-width: 768px) {
+    /* Add specific styling for smaller screens if needed */
+  }
+`;
+
 const FinalCheckOut = () => {
   const [cartItems, setCartItems] = useState([]);
   const [totalCartPrice, setTotalCartPrice] = useState(0);
   const [formData, setFormData] = useState(null);
   const [payFastView, setPayFastView] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cartData = localStorage.getItem("cart");
@@ -90,7 +115,7 @@ const FinalCheckOut = () => {
 
   const calculateDeliveryFee = (province, cartPrice) => {
     const deliveryFees = {
-      Gauteng: cartPrice > 500 ? 0 : 50,
+      Gauteng: cartPrice > 600 ? 0 : 90,
       Mpumalanga: 70.0,
       Limpopo: 50.0,
       "Eastern Cape": 120.0,
@@ -111,7 +136,6 @@ const FinalCheckOut = () => {
   const paymentTotal = parseFloat(deliveryFee) + parseFloat(totalCartPrice);
 
   const initiatePayment = async () => {
-    
     try {
       const response = await fetch("http://localhost:3000/initiate-payment", {
         method: "POST",
@@ -120,7 +144,9 @@ const FinalCheckOut = () => {
         },
         body: JSON.stringify({
           productName: cartItems.map((item) => item.ProductName).join(", "),
-          productQuantity: cartItems.reduce((total, item) => total + item.quantity, 0).toString(),
+          productQuantity: cartItems
+            .reduce((total, item) => total + item.quantity, 0)
+            .toString(),
           paymentTotal: paymentTotal.toString(),
           userName: formData.name,
           email: formData.email,
@@ -128,15 +154,14 @@ const FinalCheckOut = () => {
           address: formData.address,
         }),
       });
-  
+
       if (response.ok) {
         const paymentData = await response.json();
         console.log("Payment ID:", paymentData.paymentId);
         // Assuming the backend returns a URL or payment ID for redirection
         setPayFastView(paymentData.paymentId);
-  
+
         // Redirect to payment gateway
-        
       } else {
         throw new Error("Failed to initiate payment");
       }
@@ -157,7 +182,7 @@ const FinalCheckOut = () => {
           function (result) {
             if (result === true) {
               // Payment Completed
-              
+              setIsModalOpen(true);
             } else {
               // Payment Window Closed
             }
@@ -170,10 +195,12 @@ const FinalCheckOut = () => {
         document.body.removeChild(script);
       };
     }
-  
   }, [payFastView]);
-  
 
+  const handleClick = () => {
+    navigate(`/`);
+    setIsModalOpen(false);
+  };
   return (
     <>
       <Navbar hideCartIcon={true} hideSearchContainer={true} />
@@ -213,6 +240,33 @@ const FinalCheckOut = () => {
       </Table>
 
       <SubmitButton onClick={initiatePayment}>PAY NOW</SubmitButton>
+
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        contentLabel="Payment Confirmation"
+        ariaHideApp={false}
+        style={{
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+          },
+        }}
+      >
+        <div style={{ textAlign: "center" }}>
+          <h2>Payment Successful</h2>
+          <FontAwesomeIcon icon={faCheckCircle} size="3x" color="green" />
+          <p>
+            Thank you for your purchase. A confirmation email has been sent to
+            you.
+          </p>
+          <DoneButtonModal onClick={handleClick}>Ok</DoneButtonModal>
+        </div>
+      </Modal>
     </>
   );
 };
