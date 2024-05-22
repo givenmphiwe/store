@@ -346,7 +346,7 @@ const ProductsPage = () => {
           <ProductInfo>
             <h2>{product.ProductName}</h2>
             <p>{product.productDescription}</p>
-            <ReviewLink>Write a review</ReviewLink> <GoldStar>★</GoldStar>
+            {/* <ReviewLink>Write a review</ReviewLink> <GoldStar>★</GoldStar> */}
             {product.ProductStarRating}
             <ProductPrice>
               <span style={{ fontWeight: "bold", fontSize: "1.5em" }}>
