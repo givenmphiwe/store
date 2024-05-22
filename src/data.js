@@ -114,8 +114,8 @@ export const popularProducts = [
             "https://img.perfume.com/images/products/parent/medium/791w.webp",
             "//cdn.shopify.com/s/files/1/0591/0645/products/GresCabotinedeGres100mlEDT_large.jpg?v=1658142531"
         ],
-        Price: "R 590",
-        CancalledPrice: "R 498",
+        Price: "R 400",
+        CancalledPrice: "R 598",
         ProductName: "Tea",
         category: "FOR MEN",
         productDescription: "The life sja sdsa",

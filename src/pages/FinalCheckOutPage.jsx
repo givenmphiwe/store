@@ -243,7 +243,7 @@ const FinalCheckOut = () => {
 
       <Modal
         isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
+        onRequestClose={handleClick}
         contentLabel="Payment Confirmation"
         ariaHideApp={false}
         style={{
