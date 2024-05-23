@@ -182,6 +182,10 @@ const FinalCheckOut = () => {
           function (result) {
             if (result === true) {
               // Payment Completed
+              localStorage.setItem(
+                "purchased",
+                `${cartItems.map((item) => item.id).join(",")}`
+              );
               setIsModalOpen(true);
             } else {
               // Payment Window Closed
@@ -201,6 +205,7 @@ const FinalCheckOut = () => {
     navigate(`/`);
     setIsModalOpen(false);
   };
+
   return (
     <>
       <Navbar hideCartIcon={true} hideSearchContainer={true} />

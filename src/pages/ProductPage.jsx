@@ -230,6 +230,7 @@ const SubmitReviewButton = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 5px;
+  margin-bottom: 10rem;
 
   &:hover {
     background-color: #1a6623;
@@ -255,17 +256,27 @@ const ProductsPage = () => {
     (product) => product.id === parseInt(id)
   );
   const [selectedImage, setSelectedImage] = useState(product?.img || "");
+  const [selectedName, setSelectedProducted] = useState(
+    product?.ProductName || ""
+  );
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [cartItemCount, setCartItemCount] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
+  const [reviewSectionOpen, setReviewSectionOpen] = useState(false);
 
   useEffect(() => {
     const savedReviews =
       JSON.parse(localStorage.getItem(`reviews-${id}`)) || [];
     setReviews(savedReviews);
   }, [id]);
+
+  const purchasedItems = localStorage.getItem("purchased");
+
+  //I must get the item If the id is valid to be matched with the selected item
+  console.log("The items",purchasedItems)
+
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
@@ -284,7 +295,7 @@ const ProductsPage = () => {
       setShowNotification(true);
     } else {
       // Add quantity property to the product
-      // The inquired results are in the red
+
       const productWithQuantity = { ...product, quantity: 1 };
       const newCartItems = [...cartItems, productWithQuantity];
       localStorage.setItem("cart", JSON.stringify(newCartItems));
@@ -303,16 +314,46 @@ const ProductsPage = () => {
     setShowFullDescription(!showFullDescription);
   };
 
+  //Fetching reviews from the server
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/reviews/${id}`)
+      .then((response) => response.json())
+      .then((data) => setReviews(data))
+      .catch((error) => console.error("Error fetching reviews:", error));
+  }, [id]);
+
   const handleReviewSubmit = (e) => {
     e.preventDefault();
+
+    if (!reviewText.trim()) {
+      alert("Review text cannot be empty");
+      return;
+    }
+
     const newReview = {
+      ProductName: selectedName,
       text: reviewText,
-      date: new Date().toISOString(),
     };
-    const updatedReviews = [...reviews, newReview];
-    setReviews(updatedReviews);
-    localStorage.setItem(`reviews-${id}`, JSON.stringify(updatedReviews));
-    setReviewText("");
+
+    fetch(`http://localhost:3000/reviews/${id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newReview),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setReviews([...reviews, data]);
+        setReviewText("");
+      })
+      .catch((error) => console.error("Error submitting review:", error));
   };
 
   useEffect(() => {
