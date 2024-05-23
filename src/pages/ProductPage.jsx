@@ -9,8 +9,8 @@ import { StarRateOutlined, LocalShipping } from "@mui/icons-material";
 
 const Container = styled.div`
   flex: 1;
-  margin: 5px auto; /* Set left and right margins to auto to center horizontally */
-  width: 100%; /* Set width to 100% */
+  margin: 5px auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -40,7 +40,7 @@ const ContainerDescription = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   margin-top: 20px;
-  margin-bottom: 70px; /* Add margin-bottom to create space for the button */
+  margin-bottom: 70px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2), 0px -4px 8px rgba(0, 0, 0, 0.2);
   font-weight: bold;
 `;
@@ -49,8 +49,8 @@ const Image = styled.img`
   margin-bottom: 30px;
   height: 200px;
   align-self: center;
-  margin-top: auto; /* Push image to the center of the container */
-  margin-bottom: auto; /* Push image to the center of the container */
+  margin-top: auto;
+  margin-bottom: auto;
   @media (max-width: 768px) {
     height: 150px;
   }
@@ -59,7 +59,7 @@ const Image = styled.img`
 const SmallImagesContainer = styled.div`
   margin-top: 20px;
   display: flex;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-x: auto;
   justify-content: center;
 `;
 
@@ -101,13 +101,13 @@ const AddToCartContainer = styled.div`
   left: 50%;
   bottom: 0;
   width: 100%;
-  display: flex; /* Add flexbox */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transform: translateX(-50%);
-  z-index: 999; /* Ensure it stays above other elements */
+  z-index: 999;
   background-color: white;
-  border: 1px solid #ccc; /* Add border for visual separation */
+  border: 1px solid #ccc;
   border-radius: 10px;
 `;
 
@@ -122,7 +122,7 @@ const AddToCartButton = styled.button`
   cursor: pointer;
   border: none;
   outline: none;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Tiny shadow */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 
   &:hover {
     background-color: #22802f;
@@ -131,11 +131,11 @@ const AddToCartButton = styled.button`
 
 const ProductInfo = styled.div`
   margin-top: 20px;
-  text-align: left; /* Align text to the left */
-  width: 100%; /* Ensure full width */
-  max-width: 300px; /* Limit the width to avoid stretching on larger screens */
-  margin-left: 20px; /* Push to the left */
-  margin-right: auto; /* Push to the left */
+  text-align: left;
+  width: 100%;
+  max-width: 300px;
+  margin-left: 20px;
+  margin-right: auto;
 `;
 
 const Price = styled.p`
@@ -166,10 +166,10 @@ const GoldSta = styled.span`
 `;
 
 const RowLine = styled.hr`
-  margin: 10px 0; /* Add some margin above and below the line */
+  margin: 10px 0;
   width: 100%;
   border: none;
-  border-top: 1px solid #ccc; /* Define line style */
+  border-top: 1px solid #ccc;
 `;
 
 const CircleImage = styled.img`
@@ -293,8 +293,6 @@ const ProductsPage = () => {
       setNotificationMessage("Already in your cart.");
       setShowNotification(true);
     } else {
-      // Add quantity property to the product
-
       const productWithQuantity = { ...product, quantity: 1 };
       const newCartItems = [...cartItems, productWithQuantity];
       localStorage.setItem("cart", JSON.stringify(newCartItems));
@@ -359,7 +357,6 @@ const ProductsPage = () => {
     // Scroll to the top of the page when component mounts or updates
     window.scrollTo(0, 0);
   }, []);
-
 
   return (
     <>
