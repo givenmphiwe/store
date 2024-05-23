@@ -5,6 +5,8 @@ import Modal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 const updateTotalPrice = (items) => {
   const totalPrice = items
@@ -96,7 +98,9 @@ const FinalCheckOut = () => {
   const [formData, setFormData] = useState(null);
   const [payFastView, setPayFastView] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [nextDayDelivery, setNextDayDelivery] = useState(false); // State for next day delivery
   const navigate = useNavigate();
+  const [showNavbar, setShowNavbar] = useState(true);
 
   useEffect(() => {
     const cartData = localStorage.getItem("cart");
@@ -113,8 +117,13 @@ const FinalCheckOut = () => {
     }
   }, []);
 
+  const toggleNextDayDelivery = () => {
+    setNextDayDelivery(!nextDayDelivery);
+  };
+
   const calculateDeliveryFee = (province, cartPrice) => {
-    const deliveryFees = {
+    // Define base delivery fee and additional charges for next day delivery
+    const baseDeliveryFee = {
       Gauteng: cartPrice > 600 ? 0 : 90,
       Mpumalanga: 70.0,
       Limpopo: 50.0,
@@ -126,7 +135,17 @@ const FinalCheckOut = () => {
       "KwaZulu-Natal": 155.0,
     };
 
-    return deliveryFees[province] || 0;
+    // Additional charge for next day delivery
+    const nextDayDeliveryCharge = 100.0;
+
+    // Calculate delivery fee based on province and additional charges
+    let deliveryFee = baseDeliveryFee[province] || 0;
+    if (nextDayDelivery) {
+      // Check if next day delivery is selected
+      deliveryFee += nextDayDeliveryCharge;
+    }
+
+    return deliveryFee;
   };
 
   const deliveryFee = formData
@@ -136,6 +155,7 @@ const FinalCheckOut = () => {
   const paymentTotal = parseFloat(deliveryFee) + parseFloat(totalCartPrice);
 
   const initiatePayment = async () => {
+    setShowNavbar(false);
     try {
       const response = await fetch("http://localhost:3000/initiate-payment", {
         method: "POST",
@@ -158,10 +178,7 @@ const FinalCheckOut = () => {
       if (response.ok) {
         const paymentData = await response.json();
         console.log("Payment ID:", paymentData.paymentId);
-        // Assuming the backend returns a URL or payment ID for redirection
         setPayFastView(paymentData.paymentId);
-
-        // Redirect to payment gateway
       } else {
         throw new Error("Failed to initiate payment");
       }
@@ -176,15 +193,13 @@ const FinalCheckOut = () => {
       script.src = "https://www.payfast.co.za/onsite/engine.js";
       script.async = true;
       script.onload = () => {
-        // @ts-ignore
         window.payfast_do_onsite_payment(
           { uuid: payFastView },
           function (result) {
             if (result === true) {
-              // Payment Completed
               localStorage.setItem(
                 "purchased",
-                `${cartItems.map((item) => item.id).join(",")}`
+                cartItems.map((item) => item.id).join(",")
               );
               setIsModalOpen(true);
             } else {
@@ -208,7 +223,7 @@ const FinalCheckOut = () => {
 
   return (
     <>
-      <Navbar hideCartIcon={true} hideSearchContainer={true} />
+      {showNavbar && <Navbar hideCartIcon={true} hideSearchContainer={true} />}
       <Table>
         <thead>
           <tr>
@@ -243,6 +258,13 @@ const FinalCheckOut = () => {
           </tr>
         </tfoot>
       </Table>
+
+      <FormControlLabel
+        control={
+          <Switch checked={nextDayDelivery} onChange={toggleNextDayDelivery} />
+        }
+        label="Next Day Delivery (R100) added to delivery fee"
+      />
 
       <SubmitButton onClick={initiatePayment}>PAY NOW</SubmitButton>
 
