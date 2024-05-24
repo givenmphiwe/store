@@ -328,7 +328,7 @@ const ProductsPage = () => {
       userName: PurchasedUserName,
       ProductName: selectedName,
       text: reviewText,
-      starRating, // Include star rating
+      starRating: `${starRating}`, 
     };
 
     fetch(`http://localhost:3000/reviews/${id}`, {
@@ -459,6 +459,10 @@ const ProductsPage = () => {
             rows="4"
             placeholder="Write your review here"
           />
+          <StarRating rating={starRating} setRating={setStarRating} />
+          <SubmitReviewButton type="submit">
+                Submit Review
+              </SubmitReviewButton>
           {purchasedItems && purchasedItems.includes(id) && (
             <>
               <StarRating rating={starRating} setRating={setStarRating} />
