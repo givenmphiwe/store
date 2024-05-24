@@ -273,9 +273,9 @@ const ProductsPage = () => {
   }, [id]);
 
   const purchasedItems = localStorage.getItem("purchased");
+  const PurchasedUserName = localStorage.getItem("User-purchased");
 
   //I must get the item If the id is valid to be matched with the selected item
-  console.log("The items", purchasedItems);
 
   const handleImageClick = (image) => {
     setSelectedImage(image);
@@ -329,6 +329,7 @@ const ProductsPage = () => {
     }
 
     const newReview = {
+      userName: PurchasedUserName,
       ProductName: selectedName,
       text: reviewText,
     };
@@ -462,6 +463,9 @@ const ProductsPage = () => {
             rows="4"
             placeholder="Write your review here"
           />
+          <SubmitReviewButton type="submit">
+                Submit Review
+              </SubmitReviewButton>
           {product.id === purchasedItems ? (
             <>
               <SubmitReviewButton type="submit">
@@ -475,6 +479,7 @@ const ProductsPage = () => {
         <ReviewList>
           {reviews.map((review, index) => (
             <ReviewItem key={index}>
+              <p>{review.userName}</p>
               <p>{review.text}</p>
               <small>{new Date(review.date).toLocaleString()}</small>
             </ReviewItem>

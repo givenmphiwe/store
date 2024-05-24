@@ -201,6 +201,10 @@ const FinalCheckOut = () => {
                 "purchased",
                 cartItems.map((item) => item.id).join(",")
               );
+              localStorage.setItem(
+                "User-purchased",
+                formData.name
+              );
               setIsModalOpen(true);
             } else {
               // Payment Window Closed
