@@ -275,7 +275,7 @@ const ProductsPage = () => {
   }, [id]);
 
   const purchasedItems = localStorage.getItem("purchased");
-  const PurchasedUserName = localStorage.getItem("name");
+  const PurchasedUserName = localStorage.getItem("User-purchased");
 
   const addToCart = (product) => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -290,6 +290,10 @@ const ProductsPage = () => {
       localStorage.setItem("cart", JSON.stringify(newCartItems));
       setCartItemCount(newCartItems.length);
     }
+  };
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
   };
 
   const handleAddToCart = () => {
@@ -455,11 +459,14 @@ const ProductsPage = () => {
             rows="4"
             placeholder="Write your review here"
           />
-          <StarRating rating={starRating} setRating={setStarRating} />
           {purchasedItems && purchasedItems.includes(id) && (
-            <SubmitReviewButton type="submit">
-              Submit Review
-            </SubmitReviewButton>
+            <>
+              <StarRating rating={starRating} setRating={setStarRating} />
+
+              <SubmitReviewButton type="submit">
+                Submit Review
+              </SubmitReviewButton>
+            </>
           )}
         </ReviewForm>
         <ReviewList>
