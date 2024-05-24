@@ -4,8 +4,9 @@ import { useParams, Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import SlidingNotification from "../components/SlidingNotification";
 import styled from "styled-components";
-import { CalendarMonth, ReplayOutlined } from "@mui/icons-material"; // Importing the Favorite icon from Material-UI
+import { CalendarMonth, ReplayOutlined } from "@mui/icons-material";
 import { StarRateOutlined, LocalShipping } from "@mui/icons-material";
+import StarRating from "../components/StarRating"; // Import your StarRating component
 
 const Container = styled.div`
   flex: 1;
@@ -265,6 +266,7 @@ const ProductsPage = () => {
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
   const [reviewSectionOpen, setReviewSectionOpen] = useState(false);
+  const [starRating, setStarRating] = useState(0); // Add state for star rating
 
   useEffect(() => {
     const savedReviews =
@@ -273,17 +275,7 @@ const ProductsPage = () => {
   }, [id]);
 
   const purchasedItems = localStorage.getItem("purchased");
-  const PurchasedUserName = localStorage.getItem("User-purchased");
-
-  //I must get the item If the id is valid to be matched with the selected item
-
-  const handleImageClick = (image) => {
-    setSelectedImage(image);
-  };
-
-  const randomProducts = popularProducts
-    .sort(() => 0.5 - Math.random())
-    .slice(0, 10);
+  const PurchasedUserName = localStorage.getItem("name");
 
   const addToCart = (product) => {
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -332,6 +324,7 @@ const ProductsPage = () => {
       userName: PurchasedUserName,
       ProductName: selectedName,
       text: reviewText,
+      starRating, // Include star rating
     };
 
     fetch(`http://localhost:3000/reviews/${id}`, {
@@ -350,6 +343,7 @@ const ProductsPage = () => {
       .then((data) => {
         setReviews([...reviews, data]);
         setReviewText("");
+        setStarRating(0); // Reset star rating
       })
       .catch((error) => console.error("Error submitting review:", error));
   };
@@ -385,8 +379,6 @@ const ProductsPage = () => {
           <ProductInfo>
             <h2>{product.ProductName}</h2>
             <p>{product.productDescription}</p>
-            {/* <ReviewLink>Write a review</ReviewLink> <GoldStar>★</GoldStar> */}
-            {product.ProductStarRating}
             <ProductPrice>
               <span style={{ fontWeight: "bold", fontSize: "1.5em" }}>
                 {product.Price}
@@ -412,7 +404,7 @@ const ProductsPage = () => {
       <ProductInfo>
         <h3>You Might Also Like</h3>
         <SmallImagesContainer>
-          {randomProducts.map(
+          {popularProducts.map(
             (product, index) =>
               product.id !== parseInt(id) && (
                 <Link key={index} to={`/productSelected/${product.id}`}>
@@ -463,17 +455,11 @@ const ProductsPage = () => {
             rows="4"
             placeholder="Write your review here"
           />
-          <SubmitReviewButton type="submit">
-                Submit Review
-              </SubmitReviewButton>
-          {product.id === purchasedItems ? (
-            <>
-              <SubmitReviewButton type="submit">
-                Submit Review
-              </SubmitReviewButton>
-            </>
-          ) : (
-            <></>
+          <StarRating rating={starRating} setRating={setStarRating} />
+          {purchasedItems && purchasedItems.includes(id) && (
+            <SubmitReviewButton type="submit">
+              Submit Review
+            </SubmitReviewButton>
           )}
         </ReviewForm>
         <ReviewList>
@@ -481,6 +467,7 @@ const ProductsPage = () => {
             <ReviewItem key={index}>
               <p>{review.userName}</p>
               <p>{review.text}</p>
+              <StarRating rating={review.starRating} readOnly />
               <small>{new Date(review.date).toLocaleString()}</small>
             </ReviewItem>
           ))}
