@@ -459,10 +459,7 @@ const ProductsPage = () => {
             rows="4"
             placeholder="Write your review here"
           />
-          <StarRating rating={starRating} setRating={setStarRating} />
-          <SubmitReviewButton type="submit">
-                Submit Review
-              </SubmitReviewButton>
+      
           {purchasedItems && purchasedItems.includes(id) && (
             <>
               <StarRating rating={starRating} setRating={setStarRating} />
