@@ -251,6 +251,35 @@ const ReviewItem = styled.li`
   margin-bottom: 10px;
 `;
 
+const ReviewSection = styled.div`
+  position: fixed;
+  bottom: 0;
+  right: ${(props) => (props.show ? "0" : "-400px")};
+  width: 400px;
+  height: 60%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s ease-in-out;
+  padding: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+`;
+
+const ReviewToggleButton = styled.button`
+  position: fixed;
+  top: 50%;
+  right: ${(props) => (props.show ? "400px" : "0")};
+  transform: translateY(-50%);
+  background-color: #22802f;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  padding: 10px 20px;
+  z-index: 1001;
+`;
+
 const ProductsPage = () => {
   const { id } = useParams();
   const product = popularProducts.find(
@@ -328,7 +357,7 @@ const ProductsPage = () => {
       userName: PurchasedUserName,
       ProductName: selectedName,
       text: reviewText,
-      starRating: `${starRating}`, 
+      starRating: `${starRating}`,
     };
 
     fetch(`http://localhost:3000/reviews/${id}`, {
@@ -356,6 +385,10 @@ const ProductsPage = () => {
     // Scroll to the top of the page when component mounts or updates
     window.scrollTo(0, 0);
   }, []);
+
+  const toggleReviewSection = () => {
+    setReviewSectionOpen(!reviewSectionOpen);
+  };
 
   return (
     <>
@@ -450,8 +483,18 @@ const ProductsPage = () => {
             )}
         </ProductInfo>
       </ContainerDescription>
-      <ProductInfo>
-        <h3>Customer Reviews</h3>
+      <AddToCartContainer>
+        <AddToCartButton onClick={handleAddToCart}>Add to Cart</AddToCartButton>
+      </AddToCartContainer>
+
+      <ReviewToggleButton
+        onClick={toggleReviewSection}
+        show={reviewSectionOpen}
+      >
+        {reviewSectionOpen ? "" : "Reviews"}
+      </ReviewToggleButton>
+
+      <ReviewSection show={reviewSectionOpen}>
         <ReviewForm onSubmit={handleReviewSubmit}>
           <ReviewTextArea
             value={reviewText}
@@ -459,11 +502,9 @@ const ProductsPage = () => {
             rows="4"
             placeholder="Write your review here"
           />
-      
           {purchasedItems && purchasedItems.includes(id) && (
             <>
               <StarRating rating={starRating} setRating={setStarRating} />
-
               <SubmitReviewButton type="submit">
                 Submit Review
               </SubmitReviewButton>
@@ -480,10 +521,7 @@ const ProductsPage = () => {
             </ReviewItem>
           ))}
         </ReviewList>
-      </ProductInfo>
-      <AddToCartContainer>
-        <AddToCartButton onClick={handleAddToCart}>Add to Cart</AddToCartButton>
-      </AddToCartContainer>
+      </ReviewSection>
     </>
   );
 };

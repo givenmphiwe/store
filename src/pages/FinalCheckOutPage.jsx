@@ -125,7 +125,7 @@ const FinalCheckOut = () => {
     // Define base delivery fee and additional charges for next day delivery
     const baseDeliveryFee = {
       Gauteng: cartPrice > 600 ? 0 : 90,
-      Mpumalanga: 70.0,
+      Mpumalanga: 170.0,
       Limpopo: 50.0,
       "Eastern Cape": 120.0,
       "Free State": 90.0,
