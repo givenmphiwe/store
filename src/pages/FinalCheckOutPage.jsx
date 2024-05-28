@@ -124,19 +124,19 @@ const FinalCheckOut = () => {
   const calculateDeliveryFee = (province, cartPrice) => {
     // Define base delivery fee and additional charges for next day delivery
     const baseDeliveryFee = {
-      Gauteng: cartPrice > 600 ? 0 : 90,
-      Mpumalanga: 170.0,
-      Limpopo: 50.0,
-      "Eastern Cape": 120.0,
-      "Free State": 90.0,
-      "Northern Cape": 90.0,
-      "North West": 95.0,
-      "Western Cape": 55.0,
-      "KwaZulu-Natal": 155.0,
+      Gauteng: cartPrice > 600 ? 0 : 90.00,
+      Mpumalanga: 170.00,
+      Limpopo: 120.00,
+      "Eastern Cape": 120.00,
+      "Free State": 120.00,
+      "Northern Cape": 120.00,
+      "North West": 95.00,
+      "Western Cape": 120.00,
+      "KwaZulu-Natal": 130.00,
     };
 
     // Additional charge for next day delivery
-    const nextDayDeliveryCharge = 100.0;
+    const nextDayDeliveryCharge = 100.00;
 
     // Calculate delivery fee based on province and additional charges
     let deliveryFee = baseDeliveryFee[province] || 0;
