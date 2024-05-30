@@ -177,7 +177,7 @@ const FinalCheckOut = () => {
 
       if (response.ok) {
         const paymentData = await response.json();
-        console.log("Payment ID:", paymentData.paymentId);
+        // console.log("Payment ID:", paymentData.paymentId);
         setPayFastView(paymentData.paymentId);
       } else {
         throw new Error("Failed to initiate payment");
