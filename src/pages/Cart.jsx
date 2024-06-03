@@ -132,7 +132,8 @@ const updateTotalPrice = (items) => {
   const totalPrice = items
     .reduce((total, item) => {
       console.log("item:", item);
-      const price = parseFloat(item.Price.replace("R ", ""));
+      //const price = parseFloat(item.Price.replace("R ", ""));
+      const price = item.Price.replace(/[^\d.]/g, ''); 
       console.log("price:", price);
       console.log("quantity:", item.quantity);
       return total + price * item.quantity;

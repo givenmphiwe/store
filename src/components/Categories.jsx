@@ -1,16 +1,17 @@
 import styled from "styled-components";
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@mui/icons-material";
 import React, { useRef, useEffect, useState } from "react";
-import { categories as data } from "../data"; // Rename categories to data
+import { database } from "../firebaseConfig"; 
+import { ref, onValue } from "firebase/database"; 
 
 const Container = styled.div`
   position: relative;
   display: flex;
   padding: 20px;
   margin-top: 60px;
-  overflow-x: auto; /* Enable horizontal scrolling */
-  scroll-behavior: smooth; /* Smooth scrolling */
-  flex: 1; /* Take up available width */
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex: 1;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
@@ -22,8 +23,7 @@ const CategoriesText = styled.div`
   font-weight: bold;
   bottom: 10px;
   padding: 0px;
- 
-  font-size: 20px
+  font-size: 20px;
 `;
 
 const ScrollLeftIcon = styled(ArrowLeftOutlined)`
@@ -38,18 +38,18 @@ const ScrollRightIcon = styled(ArrowRightOutlined)`
 
 const ItemContainer = styled.div`
   flex-shrink: 0;
-  width: 130px; /* Set your item width */
+  width: 130px;
   text-align: center;
 `;
 
 const Image = styled.img`
-  width: 120px; 
-  height: 120px; 
+  width: 120px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 50%; /* Make the image circular */
+  border-radius: 50%;
   @media (max-width: 768px) {
-    width: 80px; 
-    height: 80px; 
+    width: 80px;
+    height: 80px;
   }
 `;
 
@@ -59,12 +59,23 @@ const Title = styled.p`
 
 const Categories = ({ onCategoryClick }) => {
   const scrollRef = useRef(null);
+  const [categories, setCategories] = useState([]);
   const [autoScroll, setAutoScroll] = useState(true);
+
+  // Fetch categories from Firebase Realtime Database
+  useEffect(() => {
+    const categoriesRef = ref(database, 'categories'); // Adjust the path to your Firebase structure
+    onValue(categoriesRef, (snapshot) => {
+      const data = snapshot.val();
+      const categoryList = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+      setCategories(categoryList);
+    });
+  }, []);
 
   const handleScrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: -200, // Adjust as needed
+        left: -200,
         behavior: "smooth",
       });
     }
@@ -73,7 +84,7 @@ const Categories = ({ onCategoryClick }) => {
   const handleScrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({
-        left: 200, // Adjust as needed
+        left: 200,
         behavior: "smooth",
       });
     }
@@ -85,7 +96,7 @@ const Categories = ({ onCategoryClick }) => {
 
     const scrollRight = () => {
       container.scrollBy({
-        left: 200, // Adjust as needed
+        left: 200,
         behavior: "smooth",
       });
     };
@@ -115,10 +126,10 @@ const Categories = ({ onCategoryClick }) => {
     <>
       <CategoriesText>Categories</CategoriesText>
       <Container ref={scrollRef} onScroll={handleContainerScroll}>
-        {data.map((item) => (
+        {categories.map((item) => (
           <ItemContainer key={item.id} onClick={() => onCategoryClick(item.title)}>
             <Image src={item.img} alt={item.title} />
-            <Title >{item.title}</Title>
+            <Title>{item.title}</Title>
           </ItemContainer>
         ))}
       </Container>
