@@ -6,7 +6,9 @@ import SlidingNotification from "../components/SlidingNotification";
 import styled from "styled-components";
 import { CalendarMonth, ReplayOutlined } from "@mui/icons-material";
 import { StarRateOutlined, LocalShipping } from "@mui/icons-material";
-import StarRating from "../components/StarRating"; // Import your StarRating component
+import StarRating from "../components/StarRating";
+import { database } from "../firebaseConfig";
+import { ref, get, set, push } from "firebase/database";
 
 const Container = styled.div`
   flex: 1;
@@ -282,25 +284,51 @@ const ReviewToggleButton = styled.button`
 
 const ProductsPage = () => {
   const { id } = useParams();
-  const product = popularProducts.find(
-    (product) => product.id === parseInt(id)
-  );
-  const [selectedImage, setSelectedImage] = useState(product?.img || "");
-  const [selectedName, setSelectedProducted] = useState(
-    product?.ProductName || ""
-  );
+  const [product, setProduct] = useState(null);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedName, setSelectedName] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
   const [cartItemCount, setCartItemCount] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
   const [reviewSectionOpen, setReviewSectionOpen] = useState(false);
-  const [starRating, setStarRating] = useState(0); // Add state for star rating
+  const [starRating, setStarRating] = useState(0);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   useEffect(() => {
-    const savedReviews =
-      JSON.parse(localStorage.getItem(`reviews-${id}`)) || [];
-    setReviews(savedReviews);
+    // Fetch product details from Firebase
+    const productRef = ref(database, `products/${id}`);
+    get(productRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const productData = snapshot.val();
+          setProduct(productData);
+          setSelectedImage(productData.img);
+          setSelectedName(productData.ProductName);
+        } else {
+          console.error("No product data available");
+        }
+      })
+      .catch((error) => console.error("Error fetching product data:", error));
+  }, [id]);
+
+  useEffect(() => {
+    // Fetch reviews from Firebase
+    const reviewsRef = ref(database, `reviews/${id}`);
+    get(reviewsRef)
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          const reviewsData = snapshot.val();
+          const reviewsList = Object.keys(reviewsData).map(
+            (key) => reviewsData[key]
+          );
+          setReviews(reviewsList);
+        } else {
+          setReviews([]);
+        }
+      })
+      .catch((error) => console.error("Error fetching reviews:", error));
   }, [id]);
 
   const purchasedItems = localStorage.getItem("purchased");
@@ -329,21 +357,9 @@ const ProductsPage = () => {
     addToCart(product);
   };
 
-  const [showFullDescription, setShowFullDescription] = useState(false);
-
-  // Function to toggle show/hide full description
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
-
-  //Fetching reviews from the server
-
-  useEffect(() => {
-    fetch(`http://localhost:3000/reviews/${id}`)
-      .then((response) => response.json())
-      .then((data) => setReviews(data))
-      .catch((error) => console.error("Error fetching reviews:", error));
-  }, [id]);
 
   const handleReviewSubmit = (e) => {
     e.preventDefault();
@@ -357,34 +373,20 @@ const ProductsPage = () => {
       userName: PurchasedUserName,
       ProductName: selectedName,
       text: reviewText,
-      starRating: `${starRating}`,
+      starRating: starRating,
+      date: new Date().toISOString(),
     };
 
-    fetch(`http://localhost:3000/reviews/${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newReview),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setReviews([...reviews, data]);
+    const reviewRef = ref(database, `reviews/${id}`);
+    const newReviewRef = push(reviewRef);
+    set(newReviewRef, newReview)
+      .then(() => {
+        setReviews([...reviews, newReview]);
         setReviewText("");
-        setStarRating(0); // Reset star rating
+        setStarRating(0);
       })
       .catch((error) => console.error("Error submitting review:", error));
   };
-
-  useEffect(() => {
-    // Scroll to the top of the page when component mounts or updates
-    window.scrollTo(0, 0);
-  }, []);
 
   const toggleReviewSection = () => {
     setReviewSectionOpen(!reviewSectionOpen);
@@ -410,20 +412,18 @@ const ProductsPage = () => {
             </SmallImagesContainer>
           )}
       </Container>
-      {product &&
-        product.additionalImages &&
-        product.additionalImages.length > 0 && (
-          <ProductInfo>
-            <h2>{product.ProductName}</h2>
-            <p>{product.productDescription}</p>
-            <ProductPrice>
-              <span style={{ fontWeight: "bold", fontSize: "1.5em" }}>
-                {product.Price}
-              </span>{" "}
-              <Price>{product.CancalledPrice}</Price>
-            </ProductPrice>
-          </ProductInfo>
-        )}
+      {product && (
+        <ProductInfo>
+          <h2>{product.ProductName}</h2>
+          <p>{product.productDescription}</p>
+          <ProductPrice>
+            <span style={{ fontWeight: "bold", fontSize: "1.5em" }}>
+              {product.Price}
+            </span>{" "}
+            <Price>{product.CancalledPrice}</Price>
+          </ProductPrice>
+        </ProductInfo>
+      )}
       <ContainerInStock>
         <ProductInfo>
           <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>In Stock</h3>
@@ -460,27 +460,25 @@ const ProductsPage = () => {
       <ContainerDescription>
         <ProductInfo>
           <h3 style={{ fontWeight: "bold", fontSize: "1.2em" }}>Description</h3>
-          {product &&
-            product.additionalImages &&
-            product.additionalImages.length > 0 && (
-              <>
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: showFullDescription
-                      ? product.Description
-                      : product.Description.slice(0, 100),
-                  }}
-                  style={{ whiteSpace: "pre-line" }}
-                />
-                {product.Description.length > 100 && (
-                  <ShowMoreButtonContainer>
-                    <ShowMoreButton onClick={toggleDescription}>
-                      {showFullDescription ? "Show Less" : "Show More"}
-                    </ShowMoreButton>
-                  </ShowMoreButtonContainer>
-                )}
-              </>
-            )}
+          {product && (
+            <>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: showFullDescription
+                    ? product.Description
+                    : product.Description.slice(0, 100),
+                }}
+                style={{ whiteSpace: "pre-line" }}
+              />
+              {product.Description.length > 100 && (
+                <ShowMoreButtonContainer>
+                  <ShowMoreButton onClick={toggleDescription}>
+                    {showFullDescription ? "Show Less" : "Show More"}
+                  </ShowMoreButton>
+                </ShowMoreButtonContainer>
+              )}
+            </>
+          )}
         </ProductInfo>
       </ContainerDescription>
       <AddToCartContainer>

@@ -196,4 +196,4 @@ export const popularProducts = [
       "The world is shit fucken \n\n The truth to rha is new line the tj fd sjiv  revjirevni vjefnjre vejknf f fierjnj fvejnker cvkel f ejkkf ve klerjrekgrg vlekvm rklfvek",
     img: "https://img.perfume.com/images/products/parent/medium/791w.webp",
   },
-]; //add  this here
+]; 

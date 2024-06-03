@@ -24,14 +24,17 @@ const Products = ({ searchQuery, selectedCategory }) => {
 
   // Fetch products from Firebase Realtime Database
   useEffect(() => {
-    const productsRef = ref(database, 'products');
+    const productsRef = ref(database, "products");
     onValue(productsRef, (snapshot) => {
       const data = snapshot.val();
-      const productList = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+      const productList = data
+        ? Object.keys(data).map((key) => ({ id: key, ...data[key] }))
+        : [];
       setProducts(productList);
     });
   }, []);
 
+  console.log("The products selected passed param", selectedCategory);
   // Filter products based on search query and selected category whenever they change
   useEffect(() => {
     let filtered = products;

@@ -9,6 +9,7 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  console.log("The category selected",selectedCategory)
   return (
     <div>
       <Annoucement />
