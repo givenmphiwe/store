@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import Switch from "@mui/material/Switch";
+import { database } from "../firebaseConfig";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
 const updateTotalPrice = (items) => {
@@ -124,19 +125,19 @@ const FinalCheckOut = () => {
   const calculateDeliveryFee = (province, cartPrice) => {
     // Define base delivery fee and additional charges for next day delivery
     const baseDeliveryFee = {
-      Gauteng: cartPrice > 600 ? 0 : 90.00,
-      Mpumalanga: 170.00,
-      Limpopo: 120.00,
-      "Eastern Cape": 120.00,
-      "Free State": 120.00,
-      "Northern Cape": 120.00,
-      "North West": 95.00,
-      "Western Cape": 120.00,
-      "KwaZulu-Natal": 130.00,
+      Gauteng: cartPrice > 600 ? 0 : 90.0,
+      Mpumalanga: 170.0,
+      Limpopo: 120.0,
+      "Eastern Cape": 120.0,
+      "Free State": 120.0,
+      "Northern Cape": 120.0,
+      "North West": 95.0,
+      "Western Cape": 120.0,
+      "KwaZulu-Natal": 130.0,
     };
 
     // Additional charge for next day delivery
-    const nextDayDeliveryCharge = 100.00;
+    const nextDayDeliveryCharge = 100.0;
 
     // Calculate delivery fee based on province and additional charges
     let deliveryFee = baseDeliveryFee[province] || 0;
@@ -177,6 +178,7 @@ const FinalCheckOut = () => {
 
       if (response.ok) {
         const paymentData = await response.json();
+        await insertSaleRecord(paymentData.paymentId);
         // console.log("Payment ID:", paymentData.paymentId);
         setPayFastView(paymentData.paymentId);
       } else {
@@ -201,10 +203,7 @@ const FinalCheckOut = () => {
                 "purchased",
                 cartItems.map((item) => item.id).join(",")
               );
-              localStorage.setItem(
-                "User-purchased",
-                formData.name
-              );
+              localStorage.setItem("User-purchased", formData.name);
               setIsModalOpen(true);
             } else {
               // Payment Window Closed
@@ -219,6 +218,23 @@ const FinalCheckOut = () => {
       };
     }
   }, [payFastView]);
+
+  const insertSaleRecord = async (paymentId) => {
+    try {
+      const productId = cartItems.map((item) => item.id).join(", ");
+      const salesRef = database.ref(`products/${productId}/sales`);
+
+      await salesRef.set({
+        paymentId: paymentId,
+        cartItems: cartItems,
+        formData: formData,
+        paymentTotal: paymentTotal,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+      });
+    } catch (error) {
+      console.error("Error inserting sale record:", error);
+    }
+  };
 
   const handleClick = () => {
     navigate(`/`);
